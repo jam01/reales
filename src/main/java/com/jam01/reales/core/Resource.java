@@ -1,8 +1,10 @@
 package com.jam01.reales.core;
 
-import java.util.Collection;
+import java.util.Optional;
 
 public abstract class Resource {
-    public abstract ResourceType specification();
+    public Optional<ResourceType> specification() {
+        return Optional.empty();
+    }
 
 }

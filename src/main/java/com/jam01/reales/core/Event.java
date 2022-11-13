@@ -24,14 +24,34 @@ public abstract class Event<T extends Stockflow> {
         return receiver;
     }
 
-    public Event(T stockflow, Agent provider, Agent receiver) {
+    protected Event(T stockflow, Agent provider, Agent receiver) {
         this(null, stockflow, provider, receiver);
     }
 
-    public Event(EventType specification, T stockflow, Agent provider, Agent receiver) {
+    protected Event(EventType specification, T stockflow, Agent provider, Agent receiver) {
         this.specification = specification;
         this.stockflow = stockflow;
         this.provider = provider;
         this.receiver = receiver;
+    }
+
+    public static abstract class Increment extends Event<Stockflow.Increment> {
+        public Increment(Stockflow.Increment stockflow, Agent provider, Agent receiver) {
+            super(stockflow, provider, receiver);
+        }
+
+        public Increment(EventType specification, Stockflow.Increment stockflow, Agent provider, Agent receiver) {
+            super(specification, stockflow, provider, receiver);
+        }
+    }
+
+    public static abstract class Decrement extends Event<Stockflow.Decrement> {
+        public Decrement(Stockflow.Decrement stockflow, Agent provider, Agent receiver) {
+            super(stockflow, provider, receiver);
+        }
+
+        public Decrement(EventType specification, Stockflow.Decrement stockflow, Agent provider, Agent receiver) {
+            super(specification, stockflow, provider, receiver);
+        }
     }
 }

@@ -6,5 +6,6 @@ import java.util.Collection;
 
 public class Mediator {
     public Collection<Event<Produce>> produced;
-    public Collection<Event<DecreaseStockflow>> decreased;
+    public Collection<Event<Consume>> consumed;
+    public Collection<Event<Use>> used;
 }

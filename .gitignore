@@ -2,13 +2,13 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/reales/FileContentIndex/7787df9f-ddb2-40dc-836b-1678e8319143.vsidx
-/.vs/reales/FileContentIndex
-/.vs/VSWorkspaceState.json
-/.vs/slnx.sqlite
 /src/testevents/.vs/testevents/FileContentIndex
 /src/testevents/obj
 /src/testevents/bin/Debug
 /src/testevents/Properties
-/.vs/reales/v17
 /src/testevents/.vs/testevents/v17
+
+
+target/
+.idea/
+.vs

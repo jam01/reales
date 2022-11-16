@@ -1,7 +1,14 @@
 package com.jam01.reales.core;
 
-import java.util.Collection;
+import java.util.List;
 
 public abstract class Contract {
-    public abstract Collection<Commitment<Reservation>> commitments();
+    public abstract List<Commitment<Reservation>> commitments();
+
+    public boolean isFulfilled() {
+        for (Commitment<Reservation> commitment : commitments()) {
+            if (!commitment.isFulfilled()) return false;
+        }
+        return true;
+    }
 }

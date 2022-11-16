@@ -17,6 +17,7 @@
 
     <dependencies>
         <dependency>
+            <!-- https://github.com/davidB/scala-maven-plugin/blob/4.7.2/src/it/test_scala3/pom.xml -->
             <groupId>org.scala-lang</groupId>
             <artifactId>scala3-library_${scala.compat.version}</artifactId>
             <version>${scala.version}</version>

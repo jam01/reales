@@ -1,4 +1,4 @@
-package com.jam01.reales.common;
+package com.jam01.reales.distributor;
 
 import com.jam01.reales.core.Agent;
 import com.jam01.reales.core.Event;

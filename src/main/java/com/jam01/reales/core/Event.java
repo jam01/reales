@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public abstract class Event<T extends Stockflow> {
     private final EventType specification;
-    private final List<T> stockflow; // TODO: 11/13/22 make this a list
+    private final List<T> stockflow;
     private final Agent provider;
     private final Agent receiver;
 

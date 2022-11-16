@@ -6,9 +6,9 @@ public abstract class Commitment<T extends Reservation> {
     private final CommitmentType specification;
     private final EventType eventType;
     private final T reservation;
-    private Agent provider;
-    private Agent receiver;
-    private boolean isFulfilled = false;
+    private final Agent provider;
+    private final Agent receiver;
+    private final boolean isFulfilled = false;
 
     public Commitment(T reservation) {
         this(reservation, null, null);
@@ -42,13 +42,6 @@ public abstract class Commitment<T extends Reservation> {
         return isFulfilled;
     }
 
-    public void assignProvider(Agent provider) {
-        this.provider = provider;
-    }
-
-    public void assignReceiver(Agent receiver) {
-        this.receiver = receiver;
-    }
 
 //    public Event<Stockflow> fulfill() {
 //        isFulfilled = true;

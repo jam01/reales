@@ -3,7 +3,19 @@ package com.jam01.reales.core;
 import java.math.BigDecimal;
 
 public class Value {
-    public BigDecimal value;
-    public UnitOfMeasure unit;
+    private final BigDecimal value;
+    private final UnitOfMeasure unit;
 
+    public Value(BigDecimal value, UnitOfMeasure unit) {
+        this.value = value;
+        this.unit = unit;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public UnitOfMeasure getUnit() {
+        return unit;
+    }
 }

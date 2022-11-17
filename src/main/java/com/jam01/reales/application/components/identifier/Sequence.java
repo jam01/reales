@@ -1,4 +1,4 @@
-package com.jam01.reales.core.aspects.identifier;
+package com.jam01.reales.application.components.identifier;
 
 public final class Sequence implements Generator {
     private int seed;

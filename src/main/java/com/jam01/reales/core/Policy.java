@@ -1,4 +1,4 @@
 package com.jam01.reales.core;
 
-public class Policy {
+public abstract class Policy {
 }

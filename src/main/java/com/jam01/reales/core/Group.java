@@ -1,4 +1,4 @@
 package com.jam01.reales.core;
 
-public class Group {
+public abstract class Group {
 }

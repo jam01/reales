@@ -1,4 +1,4 @@
-package com.jam01.reales.core.aspects.duedate;
+package com.jam01.reales.application.components.duedate;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;

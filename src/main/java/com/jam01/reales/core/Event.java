@@ -5,28 +5,12 @@ import java.util.Optional;
 
 public abstract class Event<T extends Stockflow> {
     private final EventType specification;
-    private final List<T> stockflow;
-    private final Agent provider;
-    private final Agent receiver;
+    public final List<T> stockflow;
+    public final Agent provider;
+    public final Agent receiver;
 
     public Optional<EventType> specification() {
         return Optional.ofNullable(specification);
-    }
-
-    public List<T> stockflow() {
-        return stockflow;
-    }
-
-    public Agent provider() {
-        return provider;
-    }
-
-    public Agent receiver() {
-        return receiver;
-    }
-
-    protected Event(List<T> stockflow, Agent provider, Agent receiver) {
-        this(null, stockflow, provider, receiver);
     }
 
     protected Event(EventType specification, List<T> stockflow, Agent provider, Agent receiver) {
@@ -34,6 +18,10 @@ public abstract class Event<T extends Stockflow> {
         this.stockflow = stockflow;
         this.provider = provider;
         this.receiver = receiver;
+    }
+
+    protected Event(List<T> stockflow, Agent provider, Agent receiver) {
+        this(null, stockflow, provider, receiver);
     }
 
     public static abstract class Increment extends Event<Stockflow.Increment> {

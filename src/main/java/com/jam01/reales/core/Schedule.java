@@ -1,4 +1,4 @@
 package com.jam01.reales.core;
 
-public class Schedule {
+public abstract class Schedule {
 }

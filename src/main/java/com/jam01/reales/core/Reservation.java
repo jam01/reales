@@ -3,25 +3,18 @@ package com.jam01.reales.core;
 
 import java.util.Optional;
 
-public abstract class Reservation {
-    private final Stockflow.Direction direction;
+public class Reservation {
     private final Resource resource;
     private final ResourceType resourceType;
 
-    public Reservation(Stockflow.Direction direction, Resource resource) {
-        this.direction = direction;
+    public Reservation(Resource resource) {
         this.resource = resource;
         this.resourceType = null;
     }
 
-    public Reservation(Stockflow.Direction direction, ResourceType resourceType) {
-        this.direction = direction;
+    public Reservation(ResourceType resourceType) {
         this.resourceType = resourceType;
         this.resource = null;
-    }
-
-    public Stockflow.Direction direction() {
-        return direction;
     }
 
     public Optional<Resource> resource() {
@@ -36,6 +29,6 @@ public abstract class Reservation {
         return resource().isEmpty();
     }
 
-    public abstract Reservation allocated(Reservation reservation, Resource resource);
+//    public abstract Reservation allocated(Reservation reservation, Resource resource);
 
 }

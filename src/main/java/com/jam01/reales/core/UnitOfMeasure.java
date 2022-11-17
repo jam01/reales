@@ -3,20 +3,12 @@ package com.jam01.reales.core;
 import java.util.Objects;
 
 public class UnitOfMeasure {
-    private final String Name;
-    private final String symbol;
+    public final String Name;
+    public final String symbol;
 
     public UnitOfMeasure(String Name, String symbol) {
         this.Name = Name;
         this.symbol = symbol;
-    }
-
-    public String Name() {
-        return Name;
-    }
-
-    public String symbol() {
-        return symbol;
     }
 
     @Override
@@ -39,6 +31,4 @@ public class UnitOfMeasure {
                 "Name=" + Name + ", " +
                 "symbol=" + symbol + ']';
     }
-
-
 }

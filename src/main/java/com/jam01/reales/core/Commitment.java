@@ -2,23 +2,23 @@ package com.jam01.reales.core;
 
 import java.util.Optional;
 
-public abstract class Commitment<T extends Reservation> {
-    private final CommitmentType specification;
-    private final EventType eventType;
-    private final T reservation;
-    private final Agent provider;
-    private final Agent receiver;
+public abstract class Commitment {
+    public final CommitmentType specification;
+    public final EventType eventType;
+    public final Reservation reservation;
+    public final Agent provider;
+    public final Agent receiver;
     private final boolean isFulfilled = false;
 
-    public Commitment(T reservation) {
-        this(reservation, null, null);
-    }
+//    protected Commitment(Reservation reservation) {
+//        this(reservation, null, null);
+//    }
 
-    public Commitment(T reservation, Agent provider, Agent receiver) {
+    protected Commitment(Reservation reservation, Agent provider, Agent receiver) {
         this(reservation, provider, receiver, null, null);
     }
 
-    public Commitment(T reservation, Agent provider, Agent receiver, CommitmentType specification, EventType eventType) {
+    protected Commitment(Reservation reservation, Agent provider, Agent receiver, CommitmentType specification, EventType eventType) {
         this.specification = specification;
         this.eventType = eventType;
         this.reservation = reservation;
@@ -28,10 +28,6 @@ public abstract class Commitment<T extends Reservation> {
 
     public Optional<CommitmentType> specification() {
         return Optional.ofNullable(specification);
-    }
-
-    public T reservation() {
-        return reservation;
     }
 
     public Optional<EventType> eventSpecification() {

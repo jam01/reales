@@ -5,10 +5,10 @@ import com.jam01.reales.core.Stockflow;
 
 import java.util.Collection;
 
-public final class Inflow extends Stockflow.Increment implements HasRights {
+public final class Transfer extends Stockflow implements HasRights {
     private final Collection<Right> rights;
 
-    public Inflow(Resource resource, Collection<Right> rights) {
+    public Transfer(Resource resource, Collection<Right> rights) {
         super(resource);
         this.rights = rights;
     }

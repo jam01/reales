@@ -5,7 +5,7 @@ import com.jam01.reales.core.Stockflow;
 
 import java.util.Collection;
 
-public final class Consume extends Stockflow.Decrement implements HasFeatures {
+public final class Consume extends Stockflow implements HasFeatures {
     private final Collection<Feature> features;
 
     public Consume(Resource resource, Collection<Feature> features) {

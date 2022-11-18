@@ -1,4 +1,4 @@
 package com.jam01.reales.core;
 
-public abstract class ResourceType {
+public abstract class ResourceType extends Resource {
 }

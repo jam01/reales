@@ -1,4 +1,9 @@
 package com.jam01.reales.core;
 
-public abstract class ContractType {
+import java.util.List;
+
+public abstract class ContractType extends Contract {
+    protected ContractType(List<Commitment> commitments) {
+        super(commitments);
+    }
 }

@@ -1,4 +1,4 @@
 package com.jam01.reales.core;
 
-public abstract class Schedule {
+public abstract class Schedule extends Agreement {
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class Contract {
+public abstract class Contract extends Agreement {
     private final ContractType specification;
     public final List<Commitment> commitments;
 
@@ -19,7 +19,7 @@ public abstract class Contract {
         this(null, commitments);
     }
 
-    public boolean isFulfilled() {
+    public boolean isComplete() {
         for (Commitment commitment : commitments) {
             if (!commitment.isFulfilled()) return false;
         }

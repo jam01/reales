@@ -1,27 +1,25 @@
 package com.jam01.reales.core;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class Commitment {
     public final CommitmentType specification;
     public final EventType eventType;
-    public final Reservation reservation;
+    public final List<Reservation> reservations;
     public final Agent provider;
     public final Agent receiver;
     private final boolean isFulfilled = false;
 
-//    protected Commitment(Reservation reservation) {
-//        this(reservation, null, null);
-//    }
-
-    protected Commitment(Reservation reservation, Agent provider, Agent receiver) {
-        this(reservation, provider, receiver, null, null);
+    protected Commitment(Agent provider, Agent receiver, List<? extends Reservation> reservations) {
+        this(null, provider, receiver, reservations, null);
     }
 
-    protected Commitment(Reservation reservation, Agent provider, Agent receiver, CommitmentType specification, EventType eventType) {
+    protected Commitment(CommitmentType specification, Agent provider, Agent receiver, List<? extends Reservation> reservations, EventType eventType) {
         this.specification = specification;
         this.eventType = eventType;
-        this.reservation = reservation;
+        this.reservations = Collections.unmodifiableList(reservations);
         this.provider = provider;
         this.receiver = receiver;
     }
@@ -38,14 +36,19 @@ public abstract class Commitment {
         return isFulfilled;
     }
 
+    public Commitment fulfilledBy(Event<? extends Stockflow> event) {
+        // somehow check that the stockflows in this event fulfill this commitment
+        return this;
+    }
+
 
 //    public Event<Stockflow> fulfill() {
-//        isFulfilled = true;
+//        isComplete = true;
 //        return new
 //    }
 
     //    public Event<Stockflow> fulfill() {
-//        isFulfilled = true;
+//        isComplete = true;
 //        EventPublisher.instanceOf().publish();
 //    }
 

@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class Resource {
-    private final ResourceType specification;
+    private final ResourceType type;
     public final List<Group> groups;
 
-    public Resource(ResourceType specification, List<Group> groups) {
-        this.specification = specification;
-
-        if (groups != null) groups = Collections.unmodifiableList(groups);
-        else groups = Collections.emptyList();
-        this.groups = groups;
+    public Resource(ResourceType type, List<Group> groups) {
+        this.type = type;
+        this.groups = groups != null ? Collections.unmodifiableList(groups) : Collections.emptyList();
     }
 
     public Resource() {
@@ -21,7 +18,7 @@ public abstract class Resource {
     }
 
     public Optional<ResourceType> type() {
-        return Optional.ofNullable(specification);
+        return Optional.ofNullable(type);
     }
 
 }

@@ -30,6 +30,7 @@ public class Test {
         // financial resources
         var dollarMoney = new Money("dollar", usd);
         var register = new Cash(dollarMoney, "register", Value.of(10, usd));
+        // should I create a funding event? --
         var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", Value.of(100, usd));
 
         // product types
@@ -51,26 +52,40 @@ public class Test {
                 List.of(new SalesLine(waterProduct, 1, Value.of(1, usd)), // overriding price
                         new SalesLine(sodaProduct, 1))); // using product price
         var payOrder = new PaymentOrder(customer, enterprise,
-                List.of(new Reservation(dollarMoney, salesOrder.total().value().doubleValue())));
+                List.of(new Reservation.Specification(dollarMoney, salesOrder.total())));
         var vat = new SalesVAT(enterprise, revenueService,
-                List.of(new Reservation(dollarMoney, salesOrder.vat().value().doubleValue())));
+                List.of(new Reservation.Specification(dollarMoney, salesOrder.vat())));
+        
 
+        System.out.println(salesOrder.subtotal());
+        System.out.println(salesOrder.vat());
+        System.out.println(salesOrder.total());
 
+        System.out.println(payOrder.total());
+
+        System.out.println(vat.total());
 
         /*
         var delivery = new Delivery(enterprise, customer,
                 List.of(new Transfer(new ProductItem(waterProduct, 1), null),
                         new Transfer(new ProductItem(sodaProduct, 1), null)));
         var payment1 = new Payment(customer, enterprise,
-                List.of(new Transfer(new Cash(dollarMoney, null, Value.of(1, USD)), null)));
-        var payment2 = new Payment(customer, enterprise,
+                List.of(new Transfer(new Cash(dollarMoney, 'anonymous', Value.of(1, USD)), null)));
+        var payment2 = new Payment(bankTransferEventtype, customer, enterprise,
                 List.of(new Transfer(new Cash(dollarMoney, null, Value.of(1, USD)), null)));
         */
+        // need to specify bank account when recording the event
 
         /*
         var taxPay = new Payment(enterprise, revenueService,
                 List.of(new Transfer(new Cash(dollarMoney, null, Value.of(?, USD)), null)));
          */
+
+        // try to derive the accounting artifacts and claims
+        // profit and loss
+        // sales and purchases
+        // inventory stock value
+        // inventory accounting...? kardex
 
 
 
@@ -114,7 +129,7 @@ public class Test {
 //        // if quantity and types are the same, then auto-fulfilled
 //        // otherwise fulfilled when marked **
 //
-//        assert !salesOrder.isFulfilled();
+//        assert !contract.isCompleted();
 //
 //        // record payment
 //        var payment = new CashPayment(List.of(new Transfer(cust10usd, null)), customer, enterprise);

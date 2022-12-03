@@ -1,93 +1,74 @@
 package com.jam01.reales.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class Commitment {
-    public final CommitmentType specification;
+    public final CommitmentType type;
     public final EventType eventType;
-    public final List<Reservation> reservations;
+    public final List<? extends Reservation> reservations;
     public final Agent provider;
     public final Agent receiver;
-    private final boolean isFulfilled = false;
+    public final boolean isFulfilled;
 
-    protected Commitment(Agent provider, Agent receiver, List<? extends Reservation> reservations) {
-        this(null, provider, receiver, reservations, null);
+    public final List<Event<? extends Stockflow>> executedBy;
+
+    protected Commitment(Agent provider, Agent receiver,
+                         List<? extends Reservation> reservations) {
+        this(null, provider, receiver, reservations, null, Collections.emptyList(), false);
     }
 
-    protected Commitment(CommitmentType specification, Agent provider, Agent receiver, List<? extends Reservation> reservations, EventType eventType) {
-        this.specification = specification;
+    protected Commitment(Agent provider, Agent receiver,
+                         List<? extends Reservation> reservations,
+                         boolean isFulfilled) {
+        this(null, provider, receiver, reservations, null, Collections.emptyList(), isFulfilled);
+    }
+
+    protected Commitment(CommitmentType commitmentType,
+                         Agent provider, Agent receiver,
+                         List<? extends Reservation> reservations,
+                         EventType eventType,
+                         List<Event<? extends Stockflow>> executedBy,
+                         boolean isFulfilled) {
+        this.type = commitmentType;
         this.eventType = eventType;
-        this.reservations = Collections.unmodifiableList(reservations);
+        this.reservations = reservations != null ? Collections.unmodifiableList(reservations) : Collections.emptyList();
         this.provider = provider;
         this.receiver = receiver;
+        this.executedBy = executedBy != null ? Collections.unmodifiableList(executedBy) : Collections.emptyList();
+        this.isFulfilled = isFulfilled;
     }
 
-    public Optional<CommitmentType> specification() {
-        return Optional.ofNullable(specification);
+    public Optional<CommitmentType> type() {
+        return Optional.ofNullable(type);
     }
 
-    public Optional<EventType> eventSpecification() {
+    public Optional<EventType> eventType() {
         return Optional.ofNullable(eventType);
     }
 
-    public boolean isFulfilled() {
-        return isFulfilled;
+    public abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
+
+    public Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
+        List<Event<? extends Stockflow>> list = new ArrayList<>(executedBy.size() + events.size());
+        list.addAll(executedBy);
+        list.addAll(events);
+        return this.executedBy(list);
     }
 
-    public Commitment fulfilledBy(Event<? extends Stockflow> event) {
-        // somehow check that the stockflows in this event fulfill this commitment
-        return this;
-    }
+//    public abstract Commitment fulfilled(boolean isFulfilled);
 
-
-//    public Event<Stockflow> fulfill() {
-//        isComplete = true;
-//        return new
+//    public Commitment fulfill(List<Event<? extends Stockflow>> events) {
+//        if (this.eventType != null)
+//            for (Event<? extends Stockflow> event : events) {
+//                if (event.type().isEmpty())
+//                    throw new IllegalArgumentException("");
+//                else if (!event.type().get().equals(this.eventType)) {
+//                    throw new IllegalArgumentException("Cannot ");
+//                }
+//            }
+//        return this.fulfilled(events);
 //    }
-
-    //    public Event<Stockflow> fulfill() {
-//        isComplete = true;
-//        EventPublisher.instanceOf().publish();
-//    }
-
-//    private Commitment(Builder builder) {
-//        this.type = builder.type;
-//        this.resource = builder.resource;
-//        this.provider = builder.provider;
-//        this.receiver = builder.receiver;
-//    }
-
-//    public static class Builder {
-//        private Event.Type type;
-//        private Agent provider;
-//        private Agent receiver;
-//        private Resource resource;
-//
-//        private Builder(Event.Type type) {
-//            this.type = type;
-//        }
-//
-//        public Builder ofType(Event.Type type) {
-//            return new Builder(type);
-//        }
-//
-//        public Builder ofResource(Resource resource) {
-//            this.resource = resource;
-//            return this;
-//        }
-//
-//        public Builder withProvider(Agent agent) {
-//            this.provider = agent;
-//            return this;
-//        }
-//
-//        public Builder withReceiver(Agent agent) {
-//            this.receiver = agent;
-//            return this;
-//        }
-//
-//    }
-
 }

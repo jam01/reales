@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 public abstract class Commitment {
     public final CommitmentType type;
@@ -33,10 +34,10 @@ public abstract class Commitment {
                          List<Event<? extends Stockflow>> executedBy,
                          boolean isFulfilled) {
         this.type = commitmentType;
-        this.eventType = eventType;
-        this.reservations = reservations != null ? Collections.unmodifiableList(reservations) : Collections.emptyList();
         this.provider = provider;
         this.receiver = receiver;
+        this.reservations = reservations != null ? Collections.unmodifiableList(reservations) : Collections.emptyList();
+        this.eventType = eventType;
         this.executedBy = executedBy != null ? Collections.unmodifiableList(executedBy) : Collections.emptyList();
         this.isFulfilled = isFulfilled;
     }
@@ -49,6 +50,11 @@ public abstract class Commitment {
         return Optional.ofNullable(eventType);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T extends Commitment> T executedBy(T origin, List<Event<? extends Stockflow>> events) {
+        return (T) origin.executedBy(events);
+    }
+
     public abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
 
     public Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
@@ -58,17 +64,10 @@ public abstract class Commitment {
         return this.executedBy(list);
     }
 
-//    public abstract Commitment fulfilled(boolean isFulfilled);
+    @SuppressWarnings("unchecked")
+    public static <T extends Commitment> T fulfilled(T origin, boolean isFulfilled) {
+        return (T) origin.fulfilled(isFulfilled);
+    }
 
-//    public Commitment fulfill(List<Event<? extends Stockflow>> events) {
-//        if (this.eventType != null)
-//            for (Event<? extends Stockflow> event : events) {
-//                if (event.type().isEmpty())
-//                    throw new IllegalArgumentException("");
-//                else if (!event.type().get().equals(this.eventType)) {
-//                    throw new IllegalArgumentException("Cannot ");
-//                }
-//            }
-//        return this.fulfilled(events);
-//    }
+    public abstract Commitment fulfilled(boolean isFulfilled);
 }

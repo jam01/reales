@@ -1,7 +1,7 @@
 package com.jam01.reales.core.exchange;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface HasRights {
-    Collection<Right> getRights();
+    List<Right> getRights();
 }

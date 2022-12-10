@@ -1,7 +1,7 @@
 package com.jam01.reales.core.conversion;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface HasFeatures {
-    Collection<Feature> getFeatures();
+    List<Feature> getFeatures();
 }

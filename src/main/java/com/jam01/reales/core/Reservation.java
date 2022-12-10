@@ -6,7 +6,7 @@ public abstract class Reservation {
         return false;
     }
 
-    public static class Specification extends Reservation {
+    public abstract static class Specification extends Reservation {
         public final ResourceType resourceType;
 
         public final Value quantity;
@@ -24,18 +24,17 @@ public abstract class Reservation {
             this.quantity = quantity;
         }
 
-        // should be overridden if subclassed
-        public Allocated allocated(Resource resource) {
-            var allocType = resource.type();
-            if (allocType.isEmpty())
-                throw new IllegalArgumentException("Cannot allocate a resource without a type if a type was previously specified");
-            if (!resourceType.equals(allocType.get()))
-                throw new IllegalArgumentException("Cannot allocate a resource of a different type as reserved");
-            return new Allocated(resource);
-        }
+//        public Allocated allocated(Resource resource) {
+//            var allocType = resource.type();
+//            if (allocType.isEmpty())
+//                throw new IllegalArgumentException("Cannot allocate a resource without a type if a type was previously specified");
+//            if (!resourceType.equals(allocType.get()))
+//                throw new IllegalArgumentException("Cannot allocate a resource of a different type as reserved");
+//            return new Allocated(resource);
+//        }
     }
 
-    public static class Allocated extends Reservation {
+    public abstract static class Allocated extends Reservation {
         public final Resource resource;
 
         public Allocated(Resource resource) {

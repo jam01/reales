@@ -8,7 +8,6 @@ public abstract class Reservation {
 
     public abstract static class Specification extends Reservation {
         public final ResourceType resourceType;
-
         public final Value quantity;
 
         public Specification(ResourceType resourceType, double quantity) {

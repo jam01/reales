@@ -1,20 +1,13 @@
 package com.jam01.reales.core.conversion;
 
 import com.jam01.reales.core.Resource;
-import com.jam01.reales.core.Stockflow;
 
 import java.util.List;
 
-public final class Use extends Stockflow implements HasFeatures {
-    private final List<Feature> features;
+public final class Use extends Transformation {
 
     public Use(Resource resource, List<Feature> features) {
-        super(resource);
-        this.features = features;
+        super(resource, features);
     }
 
-    @Override
-    public List<Feature> getFeatures() {
-        return features;
-    }
 }

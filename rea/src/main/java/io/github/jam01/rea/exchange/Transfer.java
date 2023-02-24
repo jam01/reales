@@ -7,10 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Transfer extends Stockflow {
-    public final List<Right> rights;
 
-    public Transfer(Resource resource, List<Right> rights) {
+    public Transfer(Resource resource) {
         super(resource);
-        this.rights = rights != null ? Collections.unmodifiableList(rights) : Collections.emptyList();
     }
 }

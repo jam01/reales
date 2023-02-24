@@ -6,8 +6,7 @@ import java.util.List;
 
 public final class Use extends Transformation {
 
-    public Use(Resource resource, List<Feature> features) {
-        super(resource, features);
+    public Use(Resource resource) {
+        super(resource);
     }
-
 }

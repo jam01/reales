@@ -1,13 +1,15 @@
 package io.github.jam01.rea;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class Commitment {
-    public final CommitmentType type;
-    public final EventType eventType;
+    private final @Nullable CommitmentType type;
+    private final @Nullable EventType eventType;
     public final List<? extends Reservation> reservations;
     public final Agent provider;
     public final Agent receiver;
@@ -26,10 +28,10 @@ public abstract class Commitment {
         this(null, provider, receiver, reservations, null, Collections.emptyList(), isFulfilled);
     }
 
-    protected Commitment(CommitmentType commitmentType,
+    protected Commitment(@Nullable CommitmentType commitmentType,
                          Agent provider, Agent receiver,
                          List<? extends Reservation> reservations,
-                         EventType eventType,
+                         @Nullable EventType eventType,
                          List<Event<? extends Stockflow>> executedBy,
                          boolean isFulfilled) {
         this.type = commitmentType;

@@ -1,5 +1,7 @@
 package io.github.jam01.rea;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -9,15 +11,15 @@ import java.util.Set;
 // derive claims based on commitments fulfilled
 // instantiate new commitments (e.g.: penalties, installments)
 public abstract class Contract extends Agreement {
-    private final ContractType specification;
+    private final @Nullable ContractType specification;
     public final List<Commitment> commitments;
 
     protected Contract(List<Commitment> commitments) {
         this(null, commitments);
     }
 
-    protected Contract(ContractType specification, List<Commitment> commitments) {
-        this.specification = specification;
+    protected Contract(@Nullable ContractType type, List<Commitment> commitments) {
+        this.specification = type;
         this.commitments = commitments != null ? Collections.unmodifiableList(commitments) : Collections.emptyList();
     }
 

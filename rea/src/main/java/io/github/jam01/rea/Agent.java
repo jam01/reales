@@ -1,9 +1,11 @@
 package io.github.jam01.rea;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Optional;
 
 public abstract class Agent {
-    private final AgentType type;
+    private final @Nullable AgentType type;
 
     protected Agent(AgentType type) {
         this.type = type;

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.jam01</groupId>
+    <version>0.1.0-SNAPSHOT</version>
+    <artifactId>reales</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rea</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.release.skip>true</maven.release.skip>
+    </properties>
+
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            &lt;!&ndash; https://github.com/davidB/scala-maven-plugin/blob/4.7.2/src/it/test_scala3/pom.xml &ndash;&gt;-->
+<!--            <groupId>org.scala-lang</groupId>-->
+<!--            <artifactId>scala3-library_${scala.compat.version}</artifactId>-->
+<!--            <version>${scala.version}</version>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
+
+<!--    <build>-->
+<!--        <sourceDirectory>src/main/scala</sourceDirectory>-->
+<!--        <testSourceDirectory>src/test/scala</testSourceDirectory>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>net.alchim31.maven</groupId>-->
+<!--                <artifactId>scala-maven-plugin</artifactId>-->
+<!--                <version>4.7.2</version>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
+
+</project>

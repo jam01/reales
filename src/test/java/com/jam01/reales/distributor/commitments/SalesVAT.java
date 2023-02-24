@@ -5,7 +5,7 @@ import com.jam01.reales.core.Commitment;
 import com.jam01.reales.core.Event;
 import com.jam01.reales.core.Reservation;
 import com.jam01.reales.core.Stockflow;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.Value;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,8 +24,14 @@ public class SalesVAT extends Commitment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Commitment executedBy(List<Event<? extends Stockflow>> events) {
-        return new SalesVAT(provider, receiver, (List<Reservation.Specification>) reservations, events, false);
+    public SalesVAT executedBy(List<Event<? extends Stockflow>> events) {
+        return new SalesVAT(provider, receiver, (List<Reservation.Specification>) reservations, events, isFulfilled);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public SalesVAT fulfilled(boolean isFulfilled) {
+        return new SalesVAT(provider, receiver, (List<Reservation.Specification>) reservations, executedBy, isFulfilled);
     }
 
     // sum(reservations.amount)

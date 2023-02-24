@@ -6,8 +6,8 @@ import com.jam01.reales.core.exchange.Transfer;
 
 import java.util.List;
 
-public class Sale extends Event<Transfer> {
-    public Sale(List<Transfer> stockflow, Agent provider, Agent receiver) {
+public class Payment extends Event<Transfer> {
+    public Payment(Agent provider, Agent receiver, List<Transfer> stockflow) {
         super(provider, receiver, stockflow);
     }
 }

@@ -1,12 +1,14 @@
 package com.jam01.reales.core;
 
-public abstract class Reservation {
+import com.jam01.reales.core.attributes.Value;
+
+public class Reservation {
 
     public boolean isAllocated() {
         return false;
     }
 
-    public abstract static class Specification extends Reservation {
+    public static class Specification extends Reservation {
         public final ResourceType resourceType;
         public final Value quantity;
 
@@ -23,17 +25,22 @@ public abstract class Reservation {
             this.quantity = quantity;
         }
 
-//        public Allocated allocated(Resource resource) {
-//            var allocType = resource.type();
-//            if (allocType.isEmpty())
-//                throw new IllegalArgumentException("Cannot allocate a resource without a type if a type was previously specified");
-//            if (!resourceType.equals(allocType.get()))
-//                throw new IllegalArgumentException("Cannot allocate a resource of a different type as reserved");
-//            return new Allocated(resource);
-//        }
+        @SuppressWarnings("unchecked")
+        public static <T extends Allocated> T allocated(Specification origin, Resource resource) {
+            return (T) origin.allocated(resource);
+        }
+
+        protected Allocated allocated(Resource resource) {
+            var allocType = resource.type();
+            if (allocType.isEmpty())
+                throw new IllegalArgumentException("Cannot allocate a resource without a type if a type was previously specified");
+            if (!resourceType.equals(allocType.get()))
+                throw new IllegalArgumentException("Cannot allocate a resource of a different type as reserved");
+            return new Allocated(resource);
+        }
     }
 
-    public abstract static class Allocated extends Reservation {
+    public static class Allocated extends Reservation {
         public final Resource resource;
 
         public Allocated(Resource resource) {

@@ -5,8 +5,7 @@ import com.jam01.reales.core.Commitment;
 import com.jam01.reales.core.Event;
 import com.jam01.reales.core.Reservation;
 import com.jam01.reales.core.Stockflow;
-import com.jam01.reales.core.Value;
-import com.jam01.reales.distributor.SalesLine;
+import com.jam01.reales.core.attributes.Value;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,6 +26,11 @@ public class PaymentOrder extends Commitment {
     @Override
     public PaymentOrder executedBy(List<Event<? extends Stockflow>> events) {
         return new PaymentOrder(provider, receiver, reservations, events, isFulfilled);
+    }
+
+    @Override
+    public PaymentOrder fulfilled(boolean isFulfilled) {
+        return new PaymentOrder(provider, receiver, reservations, executedBy, isFulfilled);
     }
 
 

@@ -1,14 +1,16 @@
 package com.jam01.reales.distributor;
 
 import com.jam01.reales.core.Reservation;
-import com.jam01.reales.core.UnitOfMeasure;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.UnitOfMeasure;
+import com.jam01.reales.core.attributes.Value;
 import com.jam01.reales.distributor.agents.Customer;
 import com.jam01.reales.distributor.agents.Enterprise;
 import com.jam01.reales.distributor.agents.RevenueAgency;
 import com.jam01.reales.distributor.commitments.PaymentOrder;
 import com.jam01.reales.distributor.commitments.SalesOrder;
 import com.jam01.reales.distributor.commitments.SalesVAT;
+import com.jam01.reales.distributor.events.Delivery;
+import com.jam01.reales.distributor.events.Payment;
 import com.jam01.reales.distributor.resources.BankAccount;
 import com.jam01.reales.distributor.resources.Cash;
 import com.jam01.reales.distributor.resources.Money;
@@ -57,36 +59,41 @@ public class Test {
                 List.of(new Reservation.Specification(dollarMoney, salesOrder.vat())));
         
 
-        System.out.println(salesOrder.subtotal());
-        System.out.println(salesOrder.vat());
-        System.out.println(salesOrder.total());
+        System.out.println("sales order subtotal: " + salesOrder.subtotal().value());
+        System.out.println("sales order vat: " + salesOrder.vat().value());
+        System.out.println("sales order total: " + salesOrder.total().value());
 
-        System.out.println(payOrder.total());
+        System.out.println("payment order total: " + payOrder.total().value());
 
-        System.out.println(vat.total());
+        System.out.println("vat total: " + vat.total().value());
 
-        /*
+
+        // deliver goods
         var delivery = new Delivery(enterprise, customer,
-                List.of(new Transfer(new ProductItem(waterProduct, 1), null),
-                        new Transfer(new ProductItem(sodaProduct, 1), null)));
+                List.of(new CollectionTransfer(new ProductInventory(waterProduct, 1), null, null, waterInventory),
+                        new CollectionTransfer(new ProductInventory(sodaProduct, 1), null, null, sodaInventory)));
+
+        // customer payments
         var payment1 = new Payment(customer, enterprise,
-                List.of(new Transfer(new Cash(dollarMoney, 'anonymous', Value.of(1, USD)), null)));
-        var payment2 = new Payment(bankTransferEventtype, customer, enterprise,
-                List.of(new Transfer(new Cash(dollarMoney, null, Value.of(1, USD)), null)));
-        */
-        // need to specify bank account when recording the event
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(1, usd)), null, register, null)));
+        var payment2 = new Payment(customer, enterprise,
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(2.45, usd)), null, register, null)));
 
-        /*
-        var taxPay = new Payment(enterprise, revenueService,
-                List.of(new Transfer(new Cash(dollarMoney, null, Value.of(?, USD)), null)));
-         */
+        // tax payment
+        var taxPayment = new Payment(customer, revenueService,
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(2.45, usd)), null, register, null)));
 
+
+//        var x = payOrder.func(payOrder).apply(payOrder, null);
+
+        System.out.println();
         // try to derive the accounting artifacts and claims
         // profit and loss
         // sales and purchases
         // inventory stock value
         // inventory accounting...? kardex
 
+        // ask  for chart of accounts print out
 
 
 

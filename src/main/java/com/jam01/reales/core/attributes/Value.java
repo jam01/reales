@@ -1,4 +1,4 @@
-package com.jam01.reales.core;
+package com.jam01.reales.core.attributes;
 
 import java.math.BigDecimal;
 

@@ -2,7 +2,7 @@ package com.jam01.reales.core.exchange;
 
 import com.jam01.reales.core.Resource;
 import com.jam01.reales.core.ResourceType;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.Value;
 
 import java.util.Collections;
 import java.util.List;

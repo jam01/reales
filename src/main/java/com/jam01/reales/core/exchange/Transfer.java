@@ -11,6 +11,6 @@ public class Transfer extends Stockflow {
 
     public Transfer(Resource resource, List<Right> rights) {
         super(resource);
-        this.rights = Collections.unmodifiableList(rights);
+        this.rights = rights != null ? Collections.unmodifiableList(rights) : Collections.emptyList();
     }
 }

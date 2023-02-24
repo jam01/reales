@@ -5,9 +5,8 @@ import com.jam01.reales.core.Commitment;
 import com.jam01.reales.core.Event;
 import com.jam01.reales.core.Reservation;
 import com.jam01.reales.core.Stockflow;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.Value;
 import com.jam01.reales.distributor.SalesLine;
-import com.jam01.reales.distributor.resources.Money;
 import com.jam01.reales.distributor.resources.Product;
 
 import java.math.BigDecimal;
@@ -73,7 +72,13 @@ public class SalesOrder extends Commitment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Commitment executedBy(List<Event<? extends Stockflow>> events) {
+    public SalesOrder executedBy(List<Event<? extends Stockflow>> events) {
         return new SalesOrder(provider, receiver, (List<SalesLine>) reservations, events, isFulfilled, this.createdOn);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public SalesOrder fulfilled(boolean isFulfilled) {
+        return new SalesOrder(provider, receiver, (List<SalesLine>) reservations, executedBy, isFulfilled, this.createdOn);
     }
 }

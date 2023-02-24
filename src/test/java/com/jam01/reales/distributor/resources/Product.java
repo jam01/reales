@@ -1,8 +1,8 @@
 package com.jam01.reales.distributor.resources;
 
 import com.jam01.reales.core.ResourceType;
-import com.jam01.reales.core.UnitOfMeasure;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.UnitOfMeasure;
+import com.jam01.reales.core.attributes.Value;
 
 public class Product extends ResourceType {
     public final String name;

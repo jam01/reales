@@ -1,7 +1,7 @@
 package com.jam01.reales.distributor;
 
 import com.jam01.reales.core.Reservation;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.Value;
 import com.jam01.reales.distributor.resources.Product;
 
 public class SalesLine extends Reservation.Specification {

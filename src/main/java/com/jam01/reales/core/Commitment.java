@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 public abstract class Commitment {
     public final CommitmentType type;
@@ -55,7 +54,7 @@ public abstract class Commitment {
         return (T) origin.executedBy(events);
     }
 
-    public abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
+    protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
 
     public Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
         List<Event<? extends Stockflow>> list = new ArrayList<>(executedBy.size() + events.size());
@@ -69,5 +68,5 @@ public abstract class Commitment {
         return (T) origin.fulfilled(isFulfilled);
     }
 
-    public abstract Commitment fulfilled(boolean isFulfilled);
+    protected abstract Commitment fulfilled(boolean isFulfilled);
 }

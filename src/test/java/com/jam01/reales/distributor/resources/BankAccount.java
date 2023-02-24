@@ -2,7 +2,7 @@ package com.jam01.reales.distributor.resources;
 
 import com.jam01.reales.core.Resource;
 import com.jam01.reales.core.ResourceType;
-import com.jam01.reales.core.Value;
+import com.jam01.reales.core.attributes.Value;
 
 public class BankAccount extends Resource {
     public final Value amount;
@@ -11,7 +11,7 @@ public class BankAccount extends Resource {
     public final String number;
 
     public BankAccount(ResourceType resourceType, String name, String bank, String number, Value amount) {
-        super(resourceType, null);
+        super(resourceType, null, components);
         this.name = name;
         this.bank = bank;
         this.number = number;

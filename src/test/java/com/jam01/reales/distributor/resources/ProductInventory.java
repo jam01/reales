@@ -7,7 +7,7 @@ public class ProductInventory extends Resource {
     public final double quantity;
 
     public ProductInventory(ResourceType specification, double quantity) {
-        super(specification, null);
+        super(specification, null, components);
         this.quantity = quantity;
     }
 }

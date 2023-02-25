@@ -3,41 +3,44 @@ package io.github.jam01.rea.examples.distributor;
 import io.github.jam01.rea.Reservation;
 import io.github.jam01.rea.attributes.UnitOfMeasure;
 import io.github.jam01.rea.attributes.Value;
-import io.github.jam01.rea.examples.distributor.agents.Customer;
-import io.github.jam01.rea.examples.distributor.agents.Enterprise;
-import io.github.jam01.rea.examples.distributor.agents.RevenueAgency;
-import io.github.jam01.rea.examples.distributor.commitments.PaymentOrder;
-import io.github.jam01.rea.examples.distributor.commitments.SalesOrder;
-import io.github.jam01.rea.examples.distributor.commitments.SalesVAT;
-import io.github.jam01.rea.examples.distributor.events.Delivery;
-import io.github.jam01.rea.examples.distributor.events.Payment;
-import io.github.jam01.rea.examples.distributor.resources.BankAccount;
-import io.github.jam01.rea.examples.distributor.resources.Cash;
-import io.github.jam01.rea.examples.distributor.resources.Money;
-import io.github.jam01.rea.examples.distributor.resources.Product;
-import io.github.jam01.rea.examples.distributor.resources.ProductInventory;
+import io.github.jam01.rea.examples.distributor.domain.CollectionTransfer;
+import io.github.jam01.rea.examples.distributor.domain.events.SalesLine;
+import io.github.jam01.rea.examples.distributor.domain.agents.Customer;
+import io.github.jam01.rea.examples.distributor.domain.agents.Enterprise;
+import io.github.jam01.rea.examples.distributor.domain.agents.RevenueAgency;
+import io.github.jam01.rea.examples.distributor.domain.commitments.PaymentOrder;
+import io.github.jam01.rea.examples.distributor.domain.commitments.SalesOrder;
+import io.github.jam01.rea.examples.distributor.domain.commitments.SalesVAT;
+import io.github.jam01.rea.examples.distributor.domain.events.Sale;
+import io.github.jam01.rea.examples.distributor.domain.events.Payment;
+import io.github.jam01.rea.examples.distributor.domain.resources.BankAccount;
+import io.github.jam01.rea.examples.distributor.domain.resources.Cash;
+import io.github.jam01.rea.examples.distributor.domain.resources.MoneyType;
+import io.github.jam01.rea.examples.distributor.domain.resources.ProductType;
+import io.github.jam01.rea.examples.distributor.domain.resources.ProductInventory;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Test {
 
     public static void main(String[] args) {
         // units of measure
-        var usd = new UnitOfMeasure("US Dollar", "$");
-        var unit = new UnitOfMeasure("Unit", "u");
+        var usd = new UnitOfMeasure<>("US Dollar", "$", BigDecimal.class);
+        var unit = new UnitOfMeasure<>("Unit", "u", Integer.class);
 
         // the enterprise
-        var enterprise = new Enterprise();
+        var enterprise = Enterprise.getInstance();
 
         // financial resources
-        var dollarMoney = new Money("dollar", usd);
-        var register = new Cash(dollarMoney, "register", Value.of(10, usd));
+        var dollarMoney = new MoneyType("dollar", usd);
+        var register = new Cash(dollarMoney, "register", BigDecimal.TEN);
         // should I create a funding event? --
-        var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", Value.of(100, usd));
+        var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", BigDecimal.valueOf(100));
 
         // product types
-        var waterProduct = new Product("bottled water", unit, Value.of(1, usd));
-        var sodaProduct = new Product("soda", unit, Value.of(2, usd));
+        var waterProduct = new ProductType("bottled water", unit, Value.asDecimal(1, usd));
+        var sodaProduct = new ProductType("soda", unit, Value.asDecimal(2, usd));
 
         // inventory resources
         var waterInventory = new ProductInventory(waterProduct, 100);
@@ -50,12 +53,12 @@ public class Test {
         var revenueService = new RevenueAgency("internal revenue service");
 
         // commitments
-        var salesOrder = new SalesOrder(enterprise, customer,
-                List.of(new SalesLine(waterProduct, 1, Value.of(1, usd)), // overriding price
-                        new SalesLine(sodaProduct, 1))); // using product price
+        var salesOrder = new SalesOrder(customer,
+                List.of(new SalesLine(waterProduct, Value.of(1, unit), Value.asDecimal(1, usd)), // overriding price
+                        new SalesLine(sodaProduct, Value.of(1, unit)))); // using product price
         var payOrder = new PaymentOrder(customer, enterprise,
                 List.of(new Reservation.Specification(dollarMoney, salesOrder.total())));
-        var vat = new SalesVAT(enterprise, revenueService,
+        var vat = new SalesVAT(revenueService,
                 List.of(new Reservation.Specification(dollarMoney, salesOrder.vat())));
         
 
@@ -69,19 +72,19 @@ public class Test {
 
 
         // deliver goods
-        var delivery = new Delivery(enterprise, customer,
-                List.of(new CollectionTransfer(new ProductInventory(waterProduct, 1), null, null, waterInventory),
-                        new CollectionTransfer(new ProductInventory(sodaProduct, 1), null, null, sodaInventory)));
+        var delivery = new Sale(customer,
+                List.of(new CollectionTransfer(new ProductInventory(waterProduct, 1), null, waterInventory),
+                        new CollectionTransfer(new ProductInventory(sodaProduct, 1), null, sodaInventory)));
 
         // customer payments
         var payment1 = new Payment(customer, enterprise,
-                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(1, usd)), null, register, null)));
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", BigDecimal.ONE), register, null)));
         var payment2 = new Payment(customer, enterprise,
-                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(2.45, usd)), null, register, null)));
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", BigDecimal.valueOf(2.45)), register, null)));
 
         // tax payment
         var taxPayment = new Payment(customer, revenueService,
-                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", Value.of(2.45, usd)), null, register, null)));
+                List.of(new CollectionTransfer(new Cash(dollarMoney, "anonymous", BigDecimal.valueOf(2.45)), register, null)));
 
 
 //        var x = payOrder.func(payOrder).apply(payOrder, null);
@@ -94,10 +97,6 @@ public class Test {
         // inventory accounting...? kardex
 
         // ask  for chart of accounts print out
-
-
-
-
 
 
 

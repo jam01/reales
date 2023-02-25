@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.resources;
+package io.github.jam01.rea.examples.distributor.domain.resources;
 
 import io.github.jam01.rea.Resource;
 import io.github.jam01.rea.ResourceType;

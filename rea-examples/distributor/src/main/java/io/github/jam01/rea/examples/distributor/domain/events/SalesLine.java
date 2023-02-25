@@ -1,7 +1,6 @@
 package io.github.jam01.rea.examples.distributor.domain.events;
 
 import io.github.jam01.rea.Reservation;
-import io.github.jam01.rea.attributes.UnitOfMeasure;
 import io.github.jam01.rea.attributes.Value;
 import io.github.jam01.rea.examples.distributor.domain.resources.ProductType;
 
@@ -11,11 +10,11 @@ public class SalesLine extends Reservation.Specification {
     public final Value<BigDecimal> price;
 
     public SalesLine(ProductType productType, Value<?> quantity, Value<BigDecimal> price) {
-        // assuming that the given quantity is in the same number type as the product's uom
         super(productType, quantity);
         this.price = price;
 
-        if (!quantity.unit().equals(productType.unit)) throw new IllegalArgumentException("quantity's UnitOfMeasure must match productType's UnitOfMeasure");
+        if (!quantity.unit().equals(productType.unit))
+            throw new IllegalArgumentException("quantity's UnitOfMeasure must match productType's UnitOfMeasure");
     }
 
     public SalesLine(ProductType resourceType, Value<?> quantity) {

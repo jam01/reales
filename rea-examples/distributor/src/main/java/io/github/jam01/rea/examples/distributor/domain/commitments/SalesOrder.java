@@ -33,13 +33,15 @@ public class SalesOrder extends Commitment {
 
         if (createdOn == null) createdOn = OffsetDateTime.now();
         this.createdOn = createdOn;
-
-        // TODO: 11/27/22 validate all reservations of different resource types
-        // TODO: 11/27/22 validate all same unit
+        // possible improvements:
+        // - assert each reservation.quantity is Integer
+        // - assert all reservations are of different ResType
     }
 
 
     // sum(reservations.amount)
+    // assuming all the reservations use the same ResType (e.g.: DollarMoney)
+    // and all the values passed are BigDecimals
     public Value<BigDecimal> subtotal() {
         var subtotal = BigDecimal.ZERO;
 
@@ -48,10 +50,12 @@ public class SalesOrder extends Commitment {
             subtotal = subtotal.add(line.amount().value());
         }
 
-        return new Value<>(subtotal, ((SalesLine) reservations.get(0)).price.unit()); // TODO: 11/27/22 what unit to use?
+        return new Value<>(subtotal, ((SalesLine) reservations.get(0)).price.unit());
     }
 
-    // sum(reservations.amount * reservation.product.percentageVAT)
+    // sum(reservations.amount * reservation.product.percentageVAT / 100)
+    // assuming all the reservations use the same ResType (e.g.: DollarMoney)
+    // and all the values passed are BigDecimals
     public Value<BigDecimal> vat() {
         var vat = BigDecimal.ZERO;
 
@@ -64,12 +68,13 @@ public class SalesOrder extends Commitment {
                         .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); // line.amount * (product.percentageVAT / 100) with two decimals
         }
 
-        return new Value<>(vat, ((SalesLine) reservations.get(0)).price.unit()); // TODO: 11/27/22 what unit to use?
+        return new Value<>(vat, ((SalesLine) reservations.get(0)).price.unit());
     }
 
     // subtotal + vat
+    // assuming all the reservations use the same ResType (e.g.: DollarMoney)
     public Value<BigDecimal> total() {
-        return new Value<>(subtotal().value().add(vat().value()), ((SalesLine) reservations.get(0)).price.unit()); // TODO: 11/27/22 what unit to use?
+        return new Value<>(subtotal().value().add(vat().value()), ((SalesLine) reservations.get(0)).price.unit());
     }
 
     @Override

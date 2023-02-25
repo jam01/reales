@@ -38,7 +38,6 @@ public class PaymentOrder extends Commitment {
         return new PaymentOrder(provider, receiver, reservations, executedBy, isFulfilled);
     }
 
-
     // sum(reservations.quantity)
     // assuming all the reservations use the same ResType (e.g.: DollarMoney)
     // and all the values passed are BigDecimals

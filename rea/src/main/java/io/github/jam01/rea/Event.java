@@ -4,6 +4,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class Event<T extends Stockflow> {
@@ -17,6 +18,9 @@ public abstract class Event<T extends Stockflow> {
     }
 
     protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<T> stockflow) {
+        Objects.requireNonNull(provider);
+        Objects.requireNonNull(receiver);
+
         this.type = type;
         this.stockflow = stockflow != null ? Collections.unmodifiableList(stockflow) : Collections.emptyList();
         this.provider = provider;

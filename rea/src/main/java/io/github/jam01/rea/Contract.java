@@ -27,6 +27,7 @@ public abstract class Contract extends Agreement {
         for (Commitment commitment : commitments) {
             if (!commitment.isFulfilled) return false;
         }
+
         return true;
     }
 

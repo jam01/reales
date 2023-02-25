@@ -5,6 +5,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class Commitment {
@@ -34,6 +35,9 @@ public abstract class Commitment {
                          @Nullable EventType eventType,
                          List<Event<? extends Stockflow>> executedBy,
                          boolean isFulfilled) {
+        Objects.requireNonNull(provider);
+        Objects.requireNonNull(receiver);
+
         this.type = commitmentType;
         this.provider = provider;
         this.receiver = receiver;
@@ -51,13 +55,6 @@ public abstract class Commitment {
         return Optional.ofNullable(eventType);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Commitment> T executedBy(T origin, List<Event<? extends Stockflow>> events) {
-        return (T) origin.executedBy(events);
-    }
-
-    protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
-
     public Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
         List<Event<? extends Stockflow>> list = new ArrayList<>(executedBy.size() + events.size());
         list.addAll(executedBy);
@@ -65,10 +62,7 @@ public abstract class Commitment {
         return this.executedBy(list);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Commitment> T fulfilled(T origin, boolean isFulfilled) {
-        return (T) origin.fulfilled(isFulfilled);
-    }
-
     protected abstract Commitment fulfilled(boolean isFulfilled);
+
+    protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
 }

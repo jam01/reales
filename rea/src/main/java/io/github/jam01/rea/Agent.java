@@ -7,16 +7,15 @@ import java.util.Optional;
 public abstract class Agent {
     private final @Nullable AgentType type;
 
-    protected Agent(AgentType type) {
+    protected Agent(@Nullable AgentType type) {
         this.type = type;
     }
 
     protected Agent() {
-        this.type = null;
+        this(null);
     }
 
     public Optional<AgentType> type() {
         return Optional.ofNullable(type);
     }
-
 }

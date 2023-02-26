@@ -35,6 +35,7 @@ public class SaleTest {
         // units of measure
         var usd = new UnitOfMeasure<>("US Dollar", "$", BigDecimal.class);
         var unit = new UnitOfMeasure<>("Unit", "u", Integer.class);
+        var kilograms = new UnitOfMeasure<>("Kilograms", "kg", BigDecimal.class);
 
         // the enterprise
         var enterprise = Enterprise.getInstance();
@@ -51,17 +52,20 @@ public class SaleTest {
         var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", BigDecimal.valueOf(100));
 
         // product types
-        ProductType<Integer> waterProduct = new ProductType<>("bottled water", unit, Value.asDecimal(1, usd));
-        ProductType<Integer> sodaProduct = new ProductType<>("soda", unit, Value.asDecimal(2, usd));
+        ProductType<Integer> bottledWater = new ProductType<>("bottled water", unit, Value.asDecimal(1, usd));
+        ProductType<Integer> soda = new ProductType<>("soda", unit, Value.asDecimal(2, usd));
+        ProductType<BigDecimal> rice = new ProductType<>("rice", kilograms, Value.asDecimal(1, usd));
 
         // stock resources
-        var waterInventory = new ProductStock<>(waterProduct, Value.of(100, unit));
-        var sodaInventory = new ProductStock<>(sodaProduct, Value.of(100, unit));
+        var waterInventory = new ProductStock<>(bottledWater, Value.of(100, unit));
+        var sodaInventory = new ProductStock<>(soda, Value.of(100, unit));
+        var riceInventory = new ProductStock<>(rice, Value.asDecimal(50, kilograms));
 
         // commitments
         var salesOrder = new SalesOrder(customer,
-                List.of(new SalesLine(waterProduct, Value.of(25, unit), Value.asDecimal(2, usd)), // overriding price
-                        new SalesLine(sodaProduct, Value.of(25, unit)))); // using product price
+                List.of(new SalesLine(bottledWater, Value.of(20, unit), Value.asDecimal(2, usd)), // overriding price
+                        new SalesLine(soda, Value.of(20, unit)), // using product price
+                        new SalesLine(rice, Value.asDecimal(20, kilograms)))); // unit of measure != unit
         var payOrder = new PaymentOrder(customer, enterprise,
                 List.of(new Reservation.Specification(dollarMoney, salesOrder.total())));
         var vat = new SalesVAT(revenueService,
@@ -87,12 +91,14 @@ public class SaleTest {
 
         // sale of resources
         var sale = new Sale(customer,
-                List.of(new CollectionTransfer<>(new ProductStock<>(waterProduct, 25), null, waterInventory),
-                        new CollectionTransfer<>(new ProductStock<>(sodaProduct, 25), null, sodaInventory)));
+                List.of(new CollectionTransfer<>(new ProductStock<>(bottledWater, 20), null, waterInventory),
+                        new CollectionTransfer<>(new ProductStock<>(soda, 20), null, sodaInventory),
+                        new CollectionTransfer<>(new ProductStock<>(rice, BigDecimal.valueOf(20)), null, riceInventory)));
 
         // check the inventory is decreased
-        assertEquals(Value.of(75, unit), waterInventory.quantity());
-        assertEquals(Value.of(75, unit), sodaInventory.quantity());
+        assertEquals(Value.of(80, unit), waterInventory.quantity());
+        assertEquals(Value.of(80, unit), sodaInventory.quantity());
+        assertEquals(Value.asDecimal(30, kilograms), riceInventory.quantity());
 
         // not complete as we haven't registered any events
         assertFalse(saleContract.isComplete());

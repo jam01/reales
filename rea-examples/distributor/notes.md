@@ -25,8 +25,6 @@ An external accountant who works with an internal administrative assistant
 9. The books are all by hand, or do you have any software for that?
 Use an accounting system called Monica
 
-
-
 ---
 
 each resource should have a price
@@ -39,3 +37,13 @@ Book's incorrect assumption is one resource per event
 
 duality is between amount(sale) and amount(payment)
 
+---
+
+kardex inventory fifo
+    for each res type, all purchases and all sales -- adding up in out and total
+expenses
+    all expenses?
+monthly PnL
+    ???
+purchases and sales
+    ???

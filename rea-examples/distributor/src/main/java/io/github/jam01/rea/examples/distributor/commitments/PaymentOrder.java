@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.commitments;
+package io.github.jam01.rea.examples.distributor.commitments;
 
 import io.github.jam01.rea.Agent;
 import io.github.jam01.rea.Commitment;
@@ -10,6 +10,8 @@ import io.github.jam01.rea.attributes.Value;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static io.github.jam01.rea.examples.distributor.commitments.SalesOrder.matchBySum;
 
 public class PaymentOrder extends Commitment {
     public PaymentOrder(Agent provider, Agent receiver,
@@ -30,12 +32,15 @@ public class PaymentOrder extends Commitment {
 
     @Override
     public PaymentOrder executedBy(List<Event<? extends Stockflow>> events) {
-        return new PaymentOrder(provider, receiver, reservations, events, isFulfilled);
+        if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
+        boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
+
+        return new PaymentOrder(provider, receiver, reservations, events, isNowFulfilled);
     }
 
     @Override
     public PaymentOrder fulfilled(boolean isFulfilled) {
-        return new PaymentOrder(provider, receiver, reservations, executedBy, isFulfilled);
+        throw new UnsupportedOperationException("PaymentOrder can only be fulfilled by Payment Events matching its Commitments");
     }
 
     // sum(reservations.quantity)

@@ -35,6 +35,7 @@ public abstract class Contract extends Agreement {
         return Optional.ofNullable(specification);
     }
 
+    // TODO: 2/25/23 memoize
     public Set<Agent> parties() {
         var toReturn = new HashSet<Agent>();
         for (Commitment commitment : commitments) {

@@ -7,3 +7,12 @@ Solutions might include subclassing ResType to include one or many UnitOfMeasure
 To accommodate transferring identifiable and non-identifiable resources with the same structure, making representations simpler.
 
 The main solution is to always include ResourceType and introduce a quantity attribute in Resource subclasses. In this model we consider Resources to represent only the attributes that we care about in the context EconomicEvents.
+
+# Reified ResourceType instead of Resources as subclass
+Allows ResourceType and Resource hierarchies independently. Also, to allow assigning ResourceTypes to Resources at runtime.
+
+# Considering: ResourceType reference to itself
+Allows creating ResourceType hierarchies at runtime.
+
+# Not adding quantity Value to Resource
+Allows to exchange uniquely identifiable goods without unnecessary data.

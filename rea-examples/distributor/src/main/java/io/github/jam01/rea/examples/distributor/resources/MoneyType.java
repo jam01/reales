@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.resources;
+package io.github.jam01.rea.examples.distributor.resources;
 
 import io.github.jam01.rea.ResourceType;
 import io.github.jam01.rea.attributes.UnitOfMeasure;

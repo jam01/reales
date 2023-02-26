@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.resources;
+package io.github.jam01.rea.examples.distributor.resources;
 
 import io.github.jam01.rea.Resource;
 import io.github.jam01.rea.ResourceType;
@@ -6,17 +6,15 @@ import io.github.jam01.rea.attributes.Value;
 
 import java.math.BigDecimal;
 
-public class BankAccount extends Resource {
-    public final BigDecimal amount;
+public class BankAccount extends CollectionResource<BigDecimal> {
     public final String name;
     public final String bank;
     public final String number;
 
-    public BankAccount(ResourceType resourceType, String name, String bank, String number, BigDecimal amount) {
-        super(resourceType, null, null);
+    public BankAccount(MoneyType resourceType, String name, String bank, String number, BigDecimal quantity) {
+        super(resourceType, null, null, Value.of(quantity, resourceType.unit));
         this.name = name;
         this.bank = bank;
         this.number = number;
-        this.amount = amount;
     }
 }

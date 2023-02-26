@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.events;
+package io.github.jam01.rea.examples.distributor.events;
 
 import io.github.jam01.rea.Agent;
 import io.github.jam01.rea.Event;

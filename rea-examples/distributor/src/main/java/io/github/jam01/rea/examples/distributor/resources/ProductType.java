@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.resources;
+package io.github.jam01.rea.examples.distributor.resources;
 
 import io.github.jam01.rea.ResourceType;
 import io.github.jam01.rea.attributes.UnitOfMeasure;
@@ -6,14 +6,14 @@ import io.github.jam01.rea.attributes.Value;
 
 import java.math.BigDecimal;
 
-public class ProductType extends ResourceType {
+public class ProductType<T extends Number> extends ResourceType {
     public final String name;
-    public final UnitOfMeasure<?> unit;
+    public final UnitOfMeasure<T> unit;
     public final Value<BigDecimal> price;
     public final boolean hasVAT;
     public final int percentageVAT;
 
-    public ProductType(String name, UnitOfMeasure<?> unit, Value<BigDecimal> price, boolean hasVAT, int percentageVAT) {
+    public ProductType(String name, UnitOfMeasure<T> unit, Value<BigDecimal> price, boolean hasVAT, int percentageVAT) {
         this.unit = unit;
         this.name = name;
         this.price = price;
@@ -21,7 +21,7 @@ public class ProductType extends ResourceType {
         this.percentageVAT = percentageVAT;
     }
 
-    public ProductType(String name, UnitOfMeasure<?> unit, Value<BigDecimal> price) {
+    public ProductType(String name, UnitOfMeasure<T> unit, Value<BigDecimal> price) {
         this(name, unit, price, true, 15);
     }
 }

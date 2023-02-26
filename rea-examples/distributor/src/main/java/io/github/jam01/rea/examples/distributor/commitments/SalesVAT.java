@@ -1,4 +1,4 @@
-package io.github.jam01.rea.examples.distributor.domain.commitments;
+package io.github.jam01.rea.examples.distributor.commitments;
 
 import io.github.jam01.rea.Agent;
 import io.github.jam01.rea.Commitment;
@@ -7,10 +7,12 @@ import io.github.jam01.rea.Reservation;
 import io.github.jam01.rea.Stockflow;
 import io.github.jam01.rea.attributes.UnitOfMeasure;
 import io.github.jam01.rea.attributes.Value;
-import io.github.jam01.rea.examples.distributor.domain.agents.Enterprise;
+import io.github.jam01.rea.examples.distributor.agents.Enterprise;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static io.github.jam01.rea.examples.distributor.commitments.SalesOrder.matchBySum;
 
 public class SalesVAT extends Commitment {
     public SalesVAT(Agent receiver, List<Reservation.Specification> reservations) {
@@ -18,9 +20,9 @@ public class SalesVAT extends Commitment {
     }
 
     protected SalesVAT(Agent receiver,
-                    List<Reservation.Specification> reservations,
-                    List<Event<? extends Stockflow>> executedBy,
-                    boolean isFulfilled) {
+                       List<Reservation.Specification> reservations,
+                       List<Event<? extends Stockflow>> executedBy,
+                       boolean isFulfilled) {
         super(null, Enterprise.getInstance(), receiver, reservations, null, executedBy, isFulfilled);
         // possible improvements:
         // - only allow a single reservation
@@ -30,15 +32,16 @@ public class SalesVAT extends Commitment {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public SalesVAT executedBy(List<Event<? extends Stockflow>> events) {
-        return new SalesVAT(receiver, (List<Reservation.Specification>) reservations, events, isFulfilled);
+        if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
+        boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
+
+        return new SalesVAT(receiver, (List<Reservation.Specification>) reservations, events, isNowFulfilled);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public SalesVAT fulfilled(boolean isFulfilled) {
-        return new SalesVAT(receiver, (List<Reservation.Specification>) reservations, executedBy, isFulfilled);
+        throw new UnsupportedOperationException("SalesVAT can only be fulfilled by Payment Events matching its Commitments");
     }
 
     // sum(reservations.quantity)

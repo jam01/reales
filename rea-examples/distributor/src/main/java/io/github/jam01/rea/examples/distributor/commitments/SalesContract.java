@@ -15,4 +15,9 @@ public class SalesContract extends Contract {
     public SalesContract(@Nullable ContractType type, List<Commitment> commitments) {
         super(type, commitments);
     }
+
+    @Override
+    protected Contract withCommitments(List<? extends Commitment> commitments1) {
+        throw new UnsupportedOperationException("This implementation cannot add commitments after creating the Contract");
+    }
 }

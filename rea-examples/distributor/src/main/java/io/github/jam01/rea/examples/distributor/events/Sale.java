@@ -11,4 +11,9 @@ public class Sale extends Event<CollectionTransfer<?>> {
     public Sale(Agent receiver, List<CollectionTransfer<?>> stockflow) {
         super(Enterprise.getInstance(), receiver, stockflow);
     }
+
+    @Override
+    protected Event<CollectionTransfer<?>> withStockflow(List<CollectionTransfer<?>> stockflow1) {
+        throw new UnsupportedOperationException("This implementation does not support adding stockflow after creating the Event");
+    }
 }

@@ -2,6 +2,7 @@ package io.github.jam01.rea;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,5 +30,17 @@ public abstract class Event<T extends Stockflow> {
 
     protected Event(Agent provider, Agent receiver, List<T> stockflow) {
         this(null, provider, receiver, stockflow);
+    }
+
+    protected abstract Event<T> withStockflow(List<T> stockflow1);
+
+    protected Event<T> extendStockflow(List<T> stockflow1) {
+        Objects.requireNonNull(stockflow1);
+
+        List<T> list = new ArrayList<>(stockflow1.size() + stockflow1.size());
+        list.addAll(stockflow);
+        list.addAll(stockflow1);
+
+        return this.withStockflow(list);
     }
 }

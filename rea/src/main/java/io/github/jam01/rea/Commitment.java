@@ -55,7 +55,9 @@ public abstract class Commitment {
         return Optional.ofNullable(eventType);
     }
 
-    public Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
+    protected Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
+        Objects.requireNonNull(events);
+
         List<Event<? extends Stockflow>> list = new ArrayList<>(executedBy.size() + events.size());
         list.addAll(executedBy);
         list.addAll(events);

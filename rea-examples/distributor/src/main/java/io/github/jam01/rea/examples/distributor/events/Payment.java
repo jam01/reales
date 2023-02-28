@@ -10,4 +10,9 @@ public class Payment extends Event<Transfer> {
     public Payment(Agent provider, Agent receiver, List<Transfer> stockflow) {
         super(provider, receiver, stockflow);
     }
+
+    @Override
+    protected Event<Transfer> withStockflow(List<Transfer> stockflow1) {
+        throw new UnsupportedOperationException("This implementation does not support adding stockflow after creating the Event");
+    }
 }

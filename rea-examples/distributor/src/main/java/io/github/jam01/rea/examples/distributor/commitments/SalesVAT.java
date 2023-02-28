@@ -55,6 +55,6 @@ public class SalesVAT extends Commitment {
             subtotal = subtotal.add(((BigDecimal) line.quantity.value()));
         }
 
-        return new Value<>(subtotal, ((UnitOfMeasure<BigDecimal>) ((Reservation.Specification) reservations.get(0)).quantity.unit()));
+        return new Value<>(subtotal, (((Reservation.Specification) reservations.get(0)).quantity.unit()));
     }
 }

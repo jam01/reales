@@ -33,9 +33,9 @@ public class SaleTest {
     @Test
     public void test() {
         // units of measure
-        var usd = new UnitOfMeasure<>("US Dollar", "$", BigDecimal.class);
-        var unit = new UnitOfMeasure<>("Unit", "u", Integer.class);
-        var kilograms = new UnitOfMeasure<>("Kilograms", "kg", BigDecimal.class);
+        var usd = new UnitOfMeasure("US Dollar", "$");
+        var unit = new UnitOfMeasure("Unit", "u");
+        var kilograms = new UnitOfMeasure("Kilograms", "kg");
 
         // the enterprise
         var enterprise = Enterprise.getInstance();
@@ -52,9 +52,9 @@ public class SaleTest {
         var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", BigDecimal.valueOf(100));
 
         // product types
-        ProductType<Integer> bottledWater = new ProductType<>("bottled water", unit, Value.asDecimal(1, usd));
-        ProductType<Integer> soda = new ProductType<>("soda", unit, Value.asDecimal(2, usd));
-        ProductType<BigDecimal> rice = new ProductType<>("rice", kilograms, Value.asDecimal(1, usd));
+        var bottledWater = new ProductType("bottled water", unit, Value.asDecimal(1, usd));
+        var soda = new ProductType("soda", unit, Value.asDecimal(2, usd));
+        var rice = new ProductType("rice", kilograms, Value.asDecimal(1, usd));
 
         // stock resources
         var waterInventory = new ProductStock<>(bottledWater, Value.of(100, unit));

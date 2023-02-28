@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 
 public class MoneyType extends ResourceType {
     public final String name;
-    public final UnitOfMeasure<BigDecimal> unit;
+    public final UnitOfMeasure unit;
 
     // only allow decimal values
-    public MoneyType(String name, UnitOfMeasure<BigDecimal> unit) {
+    public MoneyType(String name, UnitOfMeasure unit) {
         this.name = name;
         this.unit = unit;
     }

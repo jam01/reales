@@ -64,7 +64,7 @@ public class SalesOrder extends Commitment {
 
         for (Reservation reservation : reservations) {
             var line = ((SalesLine) reservation);
-            var product = (ProductType<?>) line.resourceType;
+            var product = (ProductType) line.resourceType;
             if (product.hasVAT)
                 vat = vat.add(line.amount().value()
                         .multiply(BigDecimal.valueOf(product.percentageVAT))

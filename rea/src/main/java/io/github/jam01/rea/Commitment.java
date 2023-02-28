@@ -64,7 +64,7 @@ public abstract class Commitment {
         return this.executedBy(list);
     }
 
-    protected abstract Commitment fulfilled(boolean isFulfilled);
+    protected abstract Commitment fulfill(boolean isFulfilled);
 
     protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
 }

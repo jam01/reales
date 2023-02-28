@@ -122,7 +122,7 @@ public class SalesOrder extends Commitment {
     }
 
     @Override
-    protected final SalesOrder fulfilled(boolean isFulfilled) {
+    protected final SalesOrder fulfill(boolean isFulfilled) {
         throw new UnsupportedOperationException("SalesOrder can only be fulfilled by Sale Events matching its Commitments");
     }
 }

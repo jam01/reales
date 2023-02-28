@@ -126,7 +126,7 @@ public class SaleTest {
         assertTrue(execPay.isFulfilled);
         assertTrue(execdTaxPay.isFulfilled);
 
-        var execdSaleContract = new SalesContract(List.of(execdSale, execPay, execdTaxPay));
+        var execdSaleContract = saleContract.updateCommitments(List.of(execdSale, execPay, execdTaxPay));
         assertTrue(execdSaleContract.isComplete());
     }
 }

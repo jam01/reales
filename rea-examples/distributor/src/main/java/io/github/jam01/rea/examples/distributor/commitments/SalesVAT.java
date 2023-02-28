@@ -40,7 +40,7 @@ public class SalesVAT extends Commitment {
     }
 
     @Override
-    public SalesVAT fulfilled(boolean isFulfilled) {
+    public SalesVAT fulfill(boolean isFulfilled) {
         throw new UnsupportedOperationException("SalesVAT can only be fulfilled by Payment Events matching its Commitments");
     }
 

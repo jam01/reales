@@ -50,7 +50,9 @@ public abstract class Contract extends Agreement {
 
     protected abstract Contract withCommitments(List<? extends Commitment> commitments1);
 
-    protected Contract withUpdatedCommitments(List<? extends Commitment> commitments1) {
+    protected Contract updateCommitments(List<? extends Commitment> commitments1) {
+        Objects.requireNonNull(commitments1);
+
         return withCommitments(commitments1);
     }
 

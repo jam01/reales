@@ -39,7 +39,7 @@ public class PaymentOrder extends Commitment {
     }
 
     @Override
-    public PaymentOrder fulfilled(boolean isFulfilled) {
+    public PaymentOrder fulfill(boolean isFulfilled) {
         throw new UnsupportedOperationException("PaymentOrder can only be fulfilled by Payment Events matching its Commitments");
     }
 

@@ -11,8 +11,8 @@ The main solution is to always include ResourceType and introduce a quantity att
 # Reified ResourceType instead of Resources as subclass
 Allows ResourceType and Resource hierarchies independently. Also, to allow assigning ResourceTypes to Resources at runtime.
 
-# Considering: ResourceType reference to itself
-Allows creating ResourceType hierarchies at runtime.
+# Types references to Types
+Allows creating Types hierarchies at runtime.
 
 # Not adding quantity Value to Resource
 Allows to exchange uniquely identifiable goods without unnecessary data.

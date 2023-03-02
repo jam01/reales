@@ -1,5 +1,7 @@
 package io.github.jam01.rea;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * The abstract and extended specification of an Economic Event, in which its essential, grouped, or standardized
  * properties can be designated without attachment to a specific actual occurrence in time.
@@ -8,4 +10,17 @@ package io.github.jam01.rea;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class EventType {
+    private final EventType type;
+
+    public EventType(@Nullable EventType type) {
+        this.type = type;
+    }
+
+    public EventType() {
+        this(null);
+    }
+
+    public EventType type() {
+        return type;
+    }
 }

@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Economic Events are classes “of phenomena which reflect changes in scarce means [economic resources] resulting from
+ * production, exchange, consumption, and distribution”.
+ *
+ * @param <T> The type of Stockflow the Event can hold
+ * @see "Gal, Graham, Guido Geerts, and William E. McCarthy. 2022. 'The REA Accounting Model as an Accounting and
+ * Economic Ontology.' American Accounting Association."
+ */
 public abstract class Event<T extends Stockflow> {
-    private final @Nullable EventType type;
     public final List<T> stockflow;
     public final Agent provider;
     public final Agent receiver;
-
-    public Optional<EventType> type() {
-        return Optional.ofNullable(type);
-    }
+    private final @Nullable EventType type;
 
     protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<T> stockflow) {
         Objects.requireNonNull(provider);
@@ -32,8 +36,29 @@ public abstract class Event<T extends Stockflow> {
         this(null, provider, receiver, stockflow);
     }
 
+    /**
+     * The type of Event
+     *
+     * @return Optional[EventType] of this Event
+     */
+    public Optional<EventType> type() {
+        return Optional.ofNullable(type);
+    }
+
+    /**
+     * Set the given Stockflow for this Event
+     *
+     * @param stockflow1 The Stockflow to associate with this Event
+     * @return An updated Event instance
+     */
     protected abstract Event<T> withStockflow(List<T> stockflow1);
 
+    /**
+     * Extend this Event's Stockflow
+     *
+     * @param stockflow1 The additional Stockflow
+     * @return An updated Event instance
+     */
     protected Event<T> extendStockflow(List<T> stockflow1) {
         Objects.requireNonNull(stockflow1);
 

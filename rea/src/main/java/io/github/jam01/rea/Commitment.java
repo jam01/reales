@@ -8,15 +8,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * An agreement to execute an Economic Event in a well-defined future that will result in either an increase of
+ * resources or a decrease of resources.
+ *
+ * @see "Gal, Graham, Guido Geerts, and William E. McCarthy. 2022. 'The REA Accounting Model as an Accounting and
+ * Economic Ontology.' American Accounting Association."
+ */
 public abstract class Commitment {
-    private final @Nullable CommitmentType type;
-    private final @Nullable EventType eventType;
     public final List<? extends Reservation> reservations;
     public final Agent provider;
     public final Agent receiver;
     public final boolean isFulfilled;
-
     public final List<Event<? extends Stockflow>> executedBy;
+    private final @Nullable CommitmentType type;
+    private final @Nullable EventType eventType;
 
     protected Commitment(Agent provider, Agent receiver,
                          List<? extends Reservation> reservations) {
@@ -47,14 +53,31 @@ public abstract class Commitment {
         this.isFulfilled = isFulfilled;
     }
 
+    /**
+     * The type of Commitment.
+     *
+     * @return Optional[CommitmentType] of this Commitment
+     */
     public Optional<CommitmentType> type() {
         return Optional.ofNullable(type);
     }
 
+    // TODO: 2/28/23 Should be a Set<Commitment>?
+    /**
+     * The type of Event expected to fulfill this Commitment.
+     *
+     * @return Optional[CommitmentType] of this Commitment
+     */
     public Optional<EventType> eventType() {
         return Optional.ofNullable(eventType);
     }
 
+    /**
+     * Extend this Commitment's executedBy Events.
+     *
+     * @param events The additional Events
+     * @return An updated Commitment instance
+     */
     protected Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
         Objects.requireNonNull(events);
 
@@ -64,7 +87,20 @@ public abstract class Commitment {
         return this.executedBy(list);
     }
 
+    /**
+     * Fulfill or unfulfill this Commitment.
+     *
+     * @param isFulfilled whether to fulfill or unfunfill
+     *
+     * @return An updated Commitment instance
+     */
     protected abstract Commitment fulfill(boolean isFulfilled);
 
+    /**
+     * The Events to associate as executing this Event.
+     *
+     * @param events The Events to associate with this Commitment
+     * @return An updated Commitment instance
+     */
     protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
 }

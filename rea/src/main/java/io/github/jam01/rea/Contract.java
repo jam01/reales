@@ -10,8 +10,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-// derive claims based on commitments fulfilled
-// instantiate new commitments (e.g.: penalties, installments)
+/**
+ * The agreement between two Economic Agents to a bundling of reciprocated Economic Commitments, each of which details
+ * the specific or abstract nature of the resources to be exchanged or converted.
+ *
+ * @see "Gal, Graham, Guido Geerts, and William E. McCarthy. 2022. 'The REA Accounting Model as an Accounting and
+ * Economic Ontology.' American Accounting Association."
+ */
 public abstract class Contract extends Agreement {
     private final @Nullable ContractType specification;
     private final List<? extends Commitment> commitments;
@@ -25,6 +30,11 @@ public abstract class Contract extends Agreement {
         this.commitments = commitments != null ? Collections.unmodifiableList(commitments) : Collections.emptyList();
     }
 
+    /**
+     * Whether this Contract has been completed. Predicated on entire commitment bundle being fulfilled.
+     *
+     * @return true if all Commitments have been fulfilled, false otherwise.
+     */
     public boolean isComplete() {
         for (Commitment commitment : commitments) {
             if (!commitment.isFulfilled) return false;
@@ -33,11 +43,22 @@ public abstract class Contract extends Agreement {
         return true;
     }
 
+    /**
+     * The type of Contract
+     *
+     * @return Optional[ContractType] of this Contract
+     */
     public Optional<ContractType> type() {
         return Optional.ofNullable(specification);
     }
 
     // TODO: 2/25/23 memoize
+
+    /**
+     * The parties engaged in this Contract
+     *
+     * @return Set[Agent] collected from this Contract's Commitments
+     */
     public Set<Agent> parties() {
         var toReturn = new HashSet<Agent>();
         for (Commitment commitment : commitments) {
@@ -48,14 +69,32 @@ public abstract class Contract extends Agreement {
         return toReturn;
     }
 
+    /**
+     * Set the given Commitments for this Contract.
+     *
+     * @param commitments1 The Commitments to associate with this Contract
+     * @return An updated Contract instance
+     */
     protected abstract Contract withCommitments(List<? extends Commitment> commitments1);
 
+    /**
+     * Update this Contract's Commitments with updated instances.
+     *
+     * @param commitments1 The updated Commitments to associate with this Contract
+     * @return An updated Contract instance
+     */
     protected Contract updateCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 
         return withCommitments(commitments1);
     }
 
+    /**
+     * Extend this Contract's Commitments
+     *
+     * @param commitments1 The additional Commitments
+     * @return An updated Contract instance
+     */
     public Contract extendCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 

@@ -21,7 +21,7 @@ public class PaymentOrder extends Commitment {
 
     protected PaymentOrder(Agent provider, Agent receiver,
                            List<? extends Reservation> reservations,
-                           List<Event<? extends Stockflow>> executedBy,
+                           List<Event> executedBy,
                            boolean isFulfilled) {
         super(null, provider, receiver, reservations, null, executedBy, isFulfilled);
         // possible improvements:
@@ -31,7 +31,7 @@ public class PaymentOrder extends Commitment {
     }
 
     @Override
-    public PaymentOrder executedBy(List<Event<? extends Stockflow>> events) {
+    public PaymentOrder executedBy(List<Event> events) {
         if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
 

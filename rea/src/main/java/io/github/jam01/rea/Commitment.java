@@ -20,7 +20,7 @@ public abstract class Commitment {
     public final Agent provider;
     public final Agent receiver;
     public final boolean isFulfilled;
-    public final List<Event<? extends Stockflow>> executedBy;
+    public final List<Event> executedBy;
     private final @Nullable CommitmentType type;
     private final @Nullable EventType eventType;
 
@@ -39,7 +39,7 @@ public abstract class Commitment {
                          Agent provider, Agent receiver,
                          List<? extends Reservation> reservations,
                          @Nullable EventType eventType,
-                         List<Event<? extends Stockflow>> executedBy,
+                         List<Event> executedBy,
                          boolean isFulfilled) {
         Objects.requireNonNull(provider);
         Objects.requireNonNull(receiver);
@@ -78,10 +78,10 @@ public abstract class Commitment {
      * @param events The additional Events
      * @return An updated Commitment instance
      */
-    protected Commitment extendExecutedBy(List<Event<? extends Stockflow>> events) {
+    protected Commitment extendExecutedBy(List<Event> events) {
         Objects.requireNonNull(events);
 
-        List<Event<? extends Stockflow>> list = new ArrayList<>(executedBy.size() + events.size());
+        List<Event> list = new ArrayList<>(executedBy.size() + events.size());
         list.addAll(executedBy);
         list.addAll(events);
         return this.executedBy(list);
@@ -102,5 +102,5 @@ public abstract class Commitment {
      * @param events The Events to associate with this Commitment
      * @return An updated Commitment instance
      */
-    protected abstract Commitment executedBy(List<Event<? extends Stockflow>> events);
+    protected abstract Commitment executedBy(List<Event> events);
 }

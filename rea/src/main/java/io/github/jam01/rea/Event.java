@@ -16,13 +16,13 @@ import java.util.Optional;
  * @see "Gal, Graham, Guido Geerts, and William E. McCarthy. 2022. 'The REA Accounting Model as an Accounting and
  * Economic Ontology.' American Accounting Association."
  */
-public abstract class Event<T extends Stockflow> {
-    public final List<T> stockflow;
+public abstract class Event {
+    public final List<? extends Stockflow> stockflow;
     public final Agent provider;
     public final Agent receiver;
     private final @Nullable EventType type;
 
-    protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<T> stockflow) {
+    protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
         Objects.requireNonNull(provider);
         Objects.requireNonNull(receiver);
 
@@ -32,7 +32,7 @@ public abstract class Event<T extends Stockflow> {
         this.receiver = receiver;
     }
 
-    protected Event(Agent provider, Agent receiver, List<T> stockflow) {
+    protected Event(Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
         this(null, provider, receiver, stockflow);
     }
 
@@ -51,7 +51,7 @@ public abstract class Event<T extends Stockflow> {
      * @param stockflow1 The Stockflow to associate with this Event
      * @return An updated Event instance
      */
-    protected abstract Event<T> withStockflow(List<T> stockflow1);
+    protected abstract Event withStockflow(List<? extends Stockflow> stockflow1);
 
     /**
      * Extend this Event's Stockflow
@@ -59,10 +59,10 @@ public abstract class Event<T extends Stockflow> {
      * @param stockflow1 The additional Stockflow
      * @return An updated Event instance
      */
-    protected Event<T> extendStockflow(List<T> stockflow1) {
+    protected Event extendStockflow(List<? extends Stockflow> stockflow1) {
         Objects.requireNonNull(stockflow1);
 
-        List<T> list = new ArrayList<>(stockflow1.size() + stockflow1.size());
+        List<Stockflow> list = new ArrayList<>(stockflow1.size() + stockflow1.size());
         list.addAll(stockflow);
         list.addAll(stockflow1);
 

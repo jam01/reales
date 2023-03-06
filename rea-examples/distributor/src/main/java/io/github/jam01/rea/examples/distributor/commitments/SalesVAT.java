@@ -21,7 +21,7 @@ public class SalesVAT extends Commitment {
 
     protected SalesVAT(Agent receiver,
                        List<Reservation.Specification> reservations,
-                       List<Event<? extends Stockflow>> executedBy,
+                       List<Event> executedBy,
                        boolean isFulfilled) {
         super(null, Enterprise.getInstance(), receiver, reservations, null, executedBy, isFulfilled);
         // possible improvements:
@@ -32,7 +32,7 @@ public class SalesVAT extends Commitment {
     }
 
     @Override
-    public SalesVAT executedBy(List<Event<? extends Stockflow>> events) {
+    public SalesVAT executedBy(List<Event> events) {
         if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
 

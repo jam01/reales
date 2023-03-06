@@ -29,7 +29,7 @@ public class SalesOrder extends Commitment {
 
     protected SalesOrder(Agent receiver,
                       List<SalesLine> reservations,
-                      List<Event<? extends Stockflow>> executedBy,
+                      List<Event> executedBy,
                       boolean isFulfilled,
                       OffsetDateTime createdOn) {
         super(null, enterprise, receiver, reservations, null, executedBy, isFulfilled);
@@ -81,18 +81,18 @@ public class SalesOrder extends Commitment {
     }
 
     @Override
-    public SalesOrder executedBy(List<Event<? extends Stockflow>> events) {
+    public SalesOrder executedBy(List<Event> events) {
         if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<SalesLine>) reservations), events);
 
         return new SalesOrder(receiver, (List<SalesLine>) reservations, events, isNowFulfilled, this.createdOn);
     }
 
-    public static boolean matchBySum(List<? extends Reservation.Specification> reservations, List<Event<? extends Stockflow>> events) {
+    public static boolean matchBySum(List<? extends Reservation.Specification> reservations, List<Event> events) {
         var isFulfilled = false;
         var typeSum = new HashMap<ResourceType, Double>(); // precision tradeoff
 
-        for (Event<? extends Stockflow> event : events) {
+        for (Event event : events) {
             for (Stockflow stockflow : event.stockflow) {
                 CollectionTransfer<?> transfer = ((CollectionTransfer<?>) stockflow);
                 var res = ((CollectionResource<?>) transfer.resource);

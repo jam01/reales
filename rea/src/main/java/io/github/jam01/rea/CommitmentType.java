@@ -3,17 +3,17 @@ package io.github.jam01.rea;
 import org.jspecify.annotations.Nullable;
 
 public abstract class CommitmentType {
-    private final CommitmentType type;
+    protected CommitmentType type;
 
     public CommitmentType(@Nullable CommitmentType type) {
         this.type = type;
     }
 
-    public CommitmentType() {
+    protected CommitmentType() {
         this(null);
     }
 
-    public CommitmentType type() {
+    protected CommitmentType type() {
         return type;
     }
 }

@@ -64,7 +64,7 @@ public class SalesOrder extends Commitment {
 
         for (Reservation reservation : reservations) {
             var line = ((SalesLine) reservation);
-            var product = (ProductType) line.resourceType;
+            var product = (ProductType) line.resourceType();
             if (product.hasVAT)
                 vat = vat.add(line.amount().value()
                         .multiply(BigDecimal.valueOf(product.percentageVAT))
@@ -81,8 +81,8 @@ public class SalesOrder extends Commitment {
     }
 
     @Override
-    public SalesOrder executedBy(List<Event> events) {
-        if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
+    public SalesOrder execute(List<Event> events) {
+        if (isFulfilled) throw new IllegalStateException("Cannot modify execute events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<SalesLine>) reservations), events);
 
         return new SalesOrder(receiver, (List<SalesLine>) reservations, events, isNowFulfilled, this.createdOn);
@@ -93,9 +93,9 @@ public class SalesOrder extends Commitment {
         var typeSum = new HashMap<ResourceType, Double>(); // precision tradeoff
 
         for (Event event : events) {
-            for (Stockflow stockflow : event.stockflow) {
+            for (Stockflow stockflow : event.stockflow()) {
                 CollectionTransfer<?> transfer = ((CollectionTransfer<?>) stockflow);
-                var res = ((CollectionResource<?>) transfer.resource);
+                var res = ((CollectionResource<?>) transfer.resource());
                 var sum = typeSum.get(res.type().orElseThrow());
                 if (sum == null)  {
                     typeSum.put(res.type().orElseThrow(), res.quantity().value().doubleValue());
@@ -109,8 +109,8 @@ public class SalesOrder extends Commitment {
             }
 
             for (Reservation.Specification reservation : reservations) {
-                var sum = typeSum.get(reservation.resourceType);
-                if (sum == null || sum < reservation.quantity.value().doubleValue()) {
+                var sum = typeSum.get(reservation.resourceType());
+                if (sum == null || sum < reservation.quantity().value().doubleValue()) {
                     break;
                 }
 

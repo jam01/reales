@@ -10,13 +10,13 @@ import org.jspecify.annotations.Nullable;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class EventType {
-    private final EventType type;
+    protected EventType type;
 
-    public EventType(@Nullable EventType type) {
+    protected EventType(@Nullable EventType type) {
         this.type = type;
     }
 
-    public EventType() {
+    protected EventType() {
         this(null);
     }
 

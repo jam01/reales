@@ -13,8 +13,8 @@ public class Reservation {
     }
 
     public static class Specification extends Reservation {
-        public final ResourceType resourceType;
-        public final Value<?> quantity;
+        protected ResourceType resourceType;
+        protected Value<?> quantity;
 
         public Specification(ResourceType resourceType, Value<?> quantity) {
             Objects.requireNonNull(resourceType);
@@ -22,6 +22,14 @@ public class Reservation {
 
             this.resourceType = resourceType;
             this.quantity = quantity;
+        }
+
+        public ResourceType resourceType() {
+            return resourceType;
+        }
+
+        public Value<?> quantity() {
+            return quantity;
         }
 
         public Allocated allocated(Resource resource) {
@@ -41,12 +49,16 @@ public class Reservation {
     }
 
     public static class Allocated extends Reservation {
-        public final Resource resource;
+        protected Resource resource;
 
         public Allocated(Resource resource) {
             Objects.requireNonNull(resource);
 
             this.resource = resource;
+        }
+
+        public Resource resource() {
+            return resource;
         }
 
         @Override

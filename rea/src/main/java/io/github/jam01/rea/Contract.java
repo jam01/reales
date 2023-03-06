@@ -18,15 +18,15 @@ import java.util.Set;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class Contract extends Agreement {
-    private final @Nullable ContractType specification;
-    private final List<? extends Commitment> commitments;
+    protected @Nullable ContractType type;
+    protected List<? extends Commitment> commitments;
 
     protected Contract(List<? extends Commitment> commitments) {
         this(null, commitments);
     }
 
     protected Contract(@Nullable ContractType type, List<? extends Commitment> commitments) {
-        this.specification = type;
+        this.type = type;
         this.commitments = commitments != null ? Collections.unmodifiableList(commitments) : Collections.emptyList();
     }
 
@@ -49,7 +49,11 @@ public abstract class Contract extends Agreement {
      * @return Optional[ContractType] of this Contract
      */
     public Optional<ContractType> type() {
-        return Optional.ofNullable(specification);
+        return Optional.ofNullable(type);
+    }
+
+    public List<? extends Commitment> commitments() {
+        return commitments;
     }
 
     // TODO: 2/25/23 memoize
@@ -83,7 +87,7 @@ public abstract class Contract extends Agreement {
      * @param commitments1 The updated Commitments to associate with this Contract
      * @return An updated Contract instance
      */
-    protected Contract updateCommitments(List<? extends Commitment> commitments1) {
+    public Contract updateCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 
         return withCommitments(commitments1);
@@ -95,7 +99,7 @@ public abstract class Contract extends Agreement {
      * @param commitments1 The additional Commitments
      * @return An updated Contract instance
      */
-    public Contract extendCommitments(List<? extends Commitment> commitments1) {
+    protected Contract extendCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 
         List<Commitment> list = new ArrayList<>(commitments.size() + commitments1.size());

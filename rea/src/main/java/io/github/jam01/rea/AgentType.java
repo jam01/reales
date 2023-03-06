@@ -10,13 +10,13 @@ import org.jspecify.annotations.Nullable;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class AgentType {
-    private final AgentType type;
+    protected AgentType type;
 
-    public AgentType(@Nullable AgentType type) {
+    protected AgentType(@Nullable AgentType type) {
         this.type = type;
     }
 
-    public AgentType() {
+    protected AgentType() {
         this(null);
     }
 

@@ -14,17 +14,17 @@ import java.util.Optional;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class Resource {
-    public final List<Group> groups;
-    public final List<? extends Resource> components;
-    private final @Nullable ResourceType type;
+    protected List<Group> groups;
+    protected List<? extends Resource> components;
+    protected @Nullable ResourceType type;
 
-    public Resource(@Nullable ResourceType type, List<Group> groups, List<? extends Resource> components) {
+    protected Resource(@Nullable ResourceType type, List<Group> groups, List<? extends Resource> components) {
         this.type = type;
         this.groups = groups != null ? Collections.unmodifiableList(groups) : Collections.emptyList();
         this.components = components != null ? Collections.unmodifiableList(components) : Collections.emptyList();
     }
 
-    public Resource() {
+    protected Resource() {
         this(null, Collections.emptyList(), Collections.emptyList());
     }
 
@@ -37,4 +37,11 @@ public abstract class Resource {
         return Optional.ofNullable(type);
     }
 
+    public List<Group> groups() {
+        return groups;
+    }
+
+    public List<? extends Resource> components() {
+        return components;
+    }
 }

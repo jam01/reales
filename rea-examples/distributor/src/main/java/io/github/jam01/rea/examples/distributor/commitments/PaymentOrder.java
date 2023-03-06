@@ -31,8 +31,8 @@ public class PaymentOrder extends Commitment {
     }
 
     @Override
-    public PaymentOrder executedBy(List<Event> events) {
-        if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
+    public PaymentOrder execute(List<Event> events) {
+        if (isFulfilled) throw new IllegalStateException("Cannot modify execute events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
 
         return new PaymentOrder(provider, receiver, reservations, events, isNowFulfilled);
@@ -51,9 +51,9 @@ public class PaymentOrder extends Commitment {
 
         for (Reservation reservation : reservations) {
             var line = ((Reservation.Specification) reservation); // should be money
-            subtotal = subtotal.add(((BigDecimal) line.quantity.value()));
+            subtotal = subtotal.add(((BigDecimal) line.quantity().value()));
         }
 
-        return new Value<>(subtotal, ((Reservation.Specification) reservations.get(0)).quantity.unit());
+        return new Value<>(subtotal, ((Reservation.Specification) reservations.get(0)).quantity().unit());
     }
 }

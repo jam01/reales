@@ -118,13 +118,13 @@ public class SaleTest {
         assertEquals(Value.of(new BigDecimal("85"), usd), bnkAcct.quantity());
 
         // execute commitments by respective events
-        var execdSale = salesOrder.executedBy(List.of(sale));
-        var execPay = payOrder.executedBy(List.of(payment1, payment2));
-        var execdTaxPay = vat.executedBy(List.of(taxPayment));
+        var execdSale = salesOrder.execute(List.of(sale));
+        var execPay = payOrder.execute(List.of(payment1, payment2));
+        var execdTaxPay = vat.execute(List.of(taxPayment));
 
-        assertTrue(execdSale.isFulfilled);
-        assertTrue(execPay.isFulfilled);
-        assertTrue(execdTaxPay.isFulfilled);
+        assertTrue(execdSale.isFulfilled());
+        assertTrue(execPay.isFulfilled());
+        assertTrue(execdTaxPay.isFulfilled());
 
         var execdSaleContract = saleContract.updateCommitments(List.of(execdSale, execPay, execdTaxPay));
         assertTrue(execdSaleContract.isComplete());

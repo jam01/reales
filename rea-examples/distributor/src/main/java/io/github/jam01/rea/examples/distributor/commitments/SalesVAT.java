@@ -32,8 +32,8 @@ public class SalesVAT extends Commitment {
     }
 
     @Override
-    public SalesVAT executedBy(List<Event> events) {
-        if (isFulfilled) throw new IllegalStateException("Cannot modify executedBy events after order is fulfilled");
+    public SalesVAT execute(List<Event> events) {
+        if (isFulfilled) throw new IllegalStateException("Cannot modify execute events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
 
         return new SalesVAT(receiver, (List<Reservation.Specification>) reservations, events, isNowFulfilled);
@@ -52,9 +52,9 @@ public class SalesVAT extends Commitment {
 
         for (Reservation reservation : reservations) {
             var line = ((Reservation.Specification) reservation);
-            subtotal = subtotal.add(((BigDecimal) line.quantity.value()));
+            subtotal = subtotal.add(((BigDecimal) line.quantity().value()));
         }
 
-        return new Value<>(subtotal, (((Reservation.Specification) reservations.get(0)).quantity.unit()));
+        return new Value<>(subtotal, (((Reservation.Specification) reservations.get(0)).quantity().unit()));
     }
 }

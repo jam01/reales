@@ -10,13 +10,13 @@ import org.jspecify.annotations.Nullable;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class ResourceType {
-    private final ResourceType type;
+    protected ResourceType type;
 
-    public ResourceType(@Nullable ResourceType type) {
+    protected ResourceType(@Nullable ResourceType type) {
         this.type = type;
     }
 
-    public ResourceType() {
+    protected ResourceType() {
         this(null);
     }
 

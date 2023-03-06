@@ -16,13 +16,13 @@ import java.util.Optional;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class Commitment {
-    public final List<? extends Reservation> reservations;
-    public final Agent provider;
-    public final Agent receiver;
-    public final boolean isFulfilled;
-    public final List<Event> executedBy;
-    private final @Nullable CommitmentType type;
-    private final @Nullable EventType eventType;
+    protected List<? extends Reservation> reservations;
+    protected Agent provider;
+    protected Agent receiver;
+    protected boolean isFulfilled;
+    protected List<Event> executedBy;
+    protected @Nullable CommitmentType type;
+    protected @Nullable EventType eventType;
 
     protected Commitment(Agent provider, Agent receiver,
                          List<? extends Reservation> reservations) {
@@ -62,7 +62,6 @@ public abstract class Commitment {
         return Optional.ofNullable(type);
     }
 
-    // TODO: 2/28/23 Should be a Set<Commitment>?
     /**
      * The type of Event expected to fulfill this Commitment.
      *
@@ -72,26 +71,45 @@ public abstract class Commitment {
         return Optional.ofNullable(eventType);
     }
 
+    public List<? extends Reservation> reservations() {
+        return reservations;
+    }
+
+    public Agent provider() {
+        return provider;
+    }
+
+    public Agent receiver() {
+        return receiver;
+    }
+
+    public boolean isFulfilled() {
+        return isFulfilled;
+    }
+
+    public List<Event> executedBy() {
+        return executedBy;
+    }
+
     /**
-     * Extend this Commitment's executedBy Events.
+     * Extend this Commitment's execute Events.
      *
      * @param events The additional Events
      * @return An updated Commitment instance
      */
-    protected Commitment extendExecutedBy(List<Event> events) {
+    public Commitment extendExecutedBy(List<Event> events) {
         Objects.requireNonNull(events);
 
         List<Event> list = new ArrayList<>(executedBy.size() + events.size());
         list.addAll(executedBy);
         list.addAll(events);
-        return this.executedBy(list);
+        return this.execute(list);
     }
 
     /**
      * Fulfill or unfulfill this Commitment.
      *
      * @param isFulfilled whether to fulfill or unfunfill
-     *
      * @return An updated Commitment instance
      */
     protected abstract Commitment fulfill(boolean isFulfilled);
@@ -102,5 +120,6 @@ public abstract class Commitment {
      * @param events The Events to associate with this Commitment
      * @return An updated Commitment instance
      */
-    protected abstract Commitment executedBy(List<Event> events);
+    public abstract Commitment execute(List<Event> events);
+
 }

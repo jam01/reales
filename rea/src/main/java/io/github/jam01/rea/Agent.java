@@ -12,7 +12,7 @@ import java.util.Optional;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class Agent {
-    private final @Nullable AgentType type;
+    protected @Nullable AgentType type;
 
     protected Agent(@Nullable AgentType type) {
         this.type = type;

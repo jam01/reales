@@ -17,10 +17,10 @@ import java.util.Optional;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class Event {
-    public final List<? extends Stockflow> stockflow;
-    public final Agent provider;
-    public final Agent receiver;
-    private final @Nullable EventType type;
+    protected @Nullable EventType type;
+    protected List<? extends Stockflow> stockflow;
+    protected Agent provider;
+    protected Agent receiver;
 
     protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
         Objects.requireNonNull(provider);
@@ -43,6 +43,18 @@ public abstract class Event {
      */
     public Optional<EventType> type() {
         return Optional.ofNullable(type);
+    }
+
+    public List<? extends Stockflow> stockflow() {
+        return stockflow;
+    }
+
+    public Agent provider() {
+        return provider;
+    }
+
+    public Agent receiver() {
+        return receiver;
     }
 
     /**

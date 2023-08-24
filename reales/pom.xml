@@ -9,41 +9,75 @@
     <artifactId>reales</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>rea</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
     <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
+        <maven.compiler.release>20</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.release.skip>true</maven.release.skip>
+        <scala.compat.version>3</scala.compat.version>
+        <scala.version>3.2.2</scala.version>
     </properties>
 
-<!--    <dependencies>-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>2.14.2</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
 <!--        <dependency>-->
-<!--            &lt;!&ndash; https://github.com/davidB/scala-maven-plugin/blob/4.7.2/src/it/test_scala3/pom.xml &ndash;&gt;-->
+<!--            &lt;!&ndash; https://github.com/davidB/scala-maven-plugin/blob/4.8.0/src/it/test_scala3/pom.xml &ndash;&gt;-->
 <!--            <groupId>org.scala-lang</groupId>-->
 <!--            <artifactId>scala3-library_${scala.compat.version}</artifactId>-->
 <!--            <version>${scala.version}</version>-->
 <!--        </dependency>-->
-<!--    </dependencies>-->
+    </dependencies>
 
-<!--    <build>-->
-<!--        <sourceDirectory>src/main/scala</sourceDirectory>-->
-<!--        <testSourceDirectory>src/test/scala</testSourceDirectory>-->
-<!--        <plugins>-->
+    <build>
+        <!-- https://github.com/davidB/scala-maven-plugin/blob/4.8.0/src/it/testJavaAndScala/pom.xml -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
 <!--            <plugin>-->
 <!--                <groupId>net.alchim31.maven</groupId>-->
 <!--                <artifactId>scala-maven-plugin</artifactId>-->
-<!--                <version>4.7.2</version>-->
+<!--                <version>4.8.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>scala-compile-first</id>-->
+<!--                        <phase>process-resources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>compile</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>scala-test-compile</id>-->
+<!--                        <phase>process-test-resources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>testCompile</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
 <!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
+        </plugins>
+    </build>
 </project>

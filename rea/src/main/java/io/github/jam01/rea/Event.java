@@ -22,6 +22,10 @@ public abstract class Event {
     protected Agent provider;
     protected Agent receiver;
 
+    protected Event(Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
+        this(null, provider, receiver, stockflow);
+    }
+
     protected Event(@Nullable EventType type, Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
         Objects.requireNonNull(provider);
         Objects.requireNonNull(receiver);
@@ -30,10 +34,6 @@ public abstract class Event {
         this.stockflow = stockflow != null ? Collections.unmodifiableList(stockflow) : Collections.emptyList();
         this.provider = provider;
         this.receiver = receiver;
-    }
-
-    protected Event(Agent provider, Agent receiver, List<? extends Stockflow> stockflow) {
-        this(null, provider, receiver, stockflow);
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class Event {
      * @param stockflow1 The Stockflow to associate with this Event
      * @return An updated Event instance
      */
-    protected abstract Event withStockflow(List<? extends Stockflow> stockflow1);
+    protected abstract Result<? extends Event> withStockflow(List<? extends Stockflow> stockflow1);
 
     /**
      * Extend this Event's Stockflow
@@ -71,7 +71,7 @@ public abstract class Event {
      * @param stockflow1 The additional Stockflow
      * @return An updated Event instance
      */
-    protected Event extendStockflow(List<? extends Stockflow> stockflow1) {
+    protected Result<? extends Event> extendStockflow(List<? extends Stockflow> stockflow1) {
         Objects.requireNonNull(stockflow1);
 
         List<Stockflow> list = new ArrayList<>(stockflow1.size() + stockflow1.size());

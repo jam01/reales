@@ -20,7 +20,7 @@ public abstract class Commitment {
     protected Agent provider;
     protected Agent receiver;
     protected boolean isFulfilled;
-    protected List<Event> executedBy;
+    protected List<? extends Event> executedBy;
     protected @Nullable CommitmentType type;
     protected @Nullable EventType eventType;
 
@@ -39,7 +39,7 @@ public abstract class Commitment {
                          Agent provider, Agent receiver,
                          List<? extends Reservation> reservations,
                          @Nullable EventType eventType,
-                         List<Event> executedBy,
+                         List<? extends Event> executedBy,
                          boolean isFulfilled) {
         Objects.requireNonNull(provider);
         Objects.requireNonNull(receiver);
@@ -87,7 +87,7 @@ public abstract class Commitment {
         return isFulfilled;
     }
 
-    public List<Event> executedBy() {
+    public List<? extends Event> executedBy() {
         return executedBy;
     }
 
@@ -97,12 +97,13 @@ public abstract class Commitment {
      * @param events The additional Events
      * @return An updated Commitment instance
      */
-    public Commitment extendExecutedBy(List<Event> events) {
+    public Result<? extends Commitment> extendExecutedBy(List<Event> events) {
         Objects.requireNonNull(events);
 
         List<Event> list = new ArrayList<>(executedBy.size() + events.size());
         list.addAll(executedBy);
         list.addAll(events);
+
         return this.execute(list);
     }
 
@@ -112,7 +113,7 @@ public abstract class Commitment {
      * @param isFulfilled whether to fulfill or unfunfill
      * @return An updated Commitment instance
      */
-    protected abstract Commitment fulfill(boolean isFulfilled);
+    protected abstract Result<? extends Commitment> fulfill(boolean isFulfilled);
 
     /**
      * The Events to associate as executing this Event.
@@ -120,6 +121,6 @@ public abstract class Commitment {
      * @param events The Events to associate with this Commitment
      * @return An updated Commitment instance
      */
-    public abstract Commitment execute(List<Event> events);
+    public abstract Result<? extends Commitment> execute(List<? extends Event> events);
 
 }

@@ -2,18 +2,20 @@ package io.github.jam01.rea;
 
 import org.jspecify.annotations.Nullable;
 
-public abstract class ContractType {
-    private final ContractType type;
+import java.util.Optional;
 
-    public ContractType(@Nullable ContractType type) {
-        this.type = type;
-    }
+public abstract class ContractType {
+    private @Nullable ContractType type;
 
     public ContractType() {
         this(null);
     }
 
-    public ContractType type() {
-        return type;
+    public ContractType(@Nullable ContractType type) {
+        this.type = type;
+    }
+
+    public Optional<ContractType> type() {
+        return Optional.ofNullable(type);
     }
 }

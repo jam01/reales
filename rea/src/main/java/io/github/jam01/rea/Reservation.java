@@ -5,8 +5,7 @@ import io.github.jam01.rea.attributes.Value;
 import java.util.Objects;
 
 public class Reservation {
-    private Reservation() {
-    }
+    private Reservation() { }
 
     public boolean isAllocated() {
         return false;
@@ -32,6 +31,7 @@ public class Reservation {
             return quantity;
         }
 
+        // TODO: 9/13/23 should be a Result?
         public Allocated allocated(Resource resource) {
             requireEqType(resource);
 

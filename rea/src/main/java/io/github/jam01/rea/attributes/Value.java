@@ -14,7 +14,7 @@ public record Value<T extends Number>(T value, UnitOfMeasure unit) {
         return new Value<>(value, unit);
     }
 
-    public static Value<BigDecimal> asDecimal(double value, UnitOfMeasure unit) {
+    public static Value<BigDecimal> asDecimalOf(double value, UnitOfMeasure unit) {
         return new Value<>(BigDecimal.valueOf(value), unit);
     }
 }

@@ -63,7 +63,7 @@ public abstract class Contract extends Agreement {
      *
      * @return Set[Agent] collected from this Contract's Commitments
      */
-    public Set<Agent> parties() {
+    public Set<? extends Agent> parties() {
         var toReturn = new HashSet<Agent>();
         for (Commitment commitment : commitments) {
             toReturn.add(commitment.provider);
@@ -79,7 +79,7 @@ public abstract class Contract extends Agreement {
      * @param commitments1 The Commitments to associate with this Contract
      * @return An updated Contract instance
      */
-    protected abstract Contract withCommitments(List<? extends Commitment> commitments1);
+    protected abstract Result<? extends Contract> withCommitments(List<? extends Commitment> commitments1);
 
     /**
      * Update this Contract's Commitments with updated instances.
@@ -87,7 +87,7 @@ public abstract class Contract extends Agreement {
      * @param commitments1 The updated Commitments to associate with this Contract
      * @return An updated Contract instance
      */
-    public Contract updateCommitments(List<? extends Commitment> commitments1) {
+    public Result<? extends Contract> updateCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 
         return withCommitments(commitments1);
@@ -99,7 +99,7 @@ public abstract class Contract extends Agreement {
      * @param commitments1 The additional Commitments
      * @return An updated Contract instance
      */
-    protected Contract extendCommitments(List<? extends Commitment> commitments1) {
+    protected Result<? extends Contract> extendCommitments(List<? extends Commitment> commitments1) {
         Objects.requireNonNull(commitments1);
 
         List<Commitment> list = new ArrayList<>(commitments.size() + commitments1.size());

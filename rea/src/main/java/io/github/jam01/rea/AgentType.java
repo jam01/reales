@@ -2,6 +2,8 @@ package io.github.jam01.rea;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * The abstract and extended specification of an Economic Agent, in which its essential, grouped, or standardized
  * properties can be designated without attachment to a specific person or unit.
@@ -10,17 +12,17 @@ import org.jspecify.annotations.Nullable;
  * Economic Ontology.' American Accounting Association."
  */
 public abstract class AgentType {
-    protected AgentType type;
-
-    protected AgentType(@Nullable AgentType type) {
-        this.type = type;
-    }
+    protected @Nullable AgentType type;
 
     protected AgentType() {
         this(null);
     }
 
-    public AgentType type() {
-        return type;
+    protected AgentType(@Nullable AgentType type) {
+        this.type = type;
+    }
+
+    public Optional<AgentType> type() {
+        return Optional.ofNullable(type);
     }
 }

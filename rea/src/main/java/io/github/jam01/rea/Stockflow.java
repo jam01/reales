@@ -1,5 +1,7 @@
 package io.github.jam01.rea;
 
+import java.util.Objects;
+
 /**
  * Association linking a continuant Economic Resource to an occurrent Economic Event in a relationship that maintains
  * data consistency, effected with either triggered or adjusting procedures. Stockflow associations may be decomposed
@@ -12,8 +14,10 @@ package io.github.jam01.rea;
 public abstract class Stockflow {
     protected Resource resource;
 
-    // TODO: 2/24/23 can we restrict visibility to only conversion and exchange subclasses
+    // TODO: 2/24/23 can we restrict visibility to only conversion and exchange subclasses?
     protected Stockflow(Resource resource) {
+        Objects.requireNonNull(resource);
+
         this.resource = resource;
     }
 

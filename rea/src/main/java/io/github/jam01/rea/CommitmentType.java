@@ -2,18 +2,20 @@ package io.github.jam01.rea;
 
 import org.jspecify.annotations.Nullable;
 
-public abstract class CommitmentType {
-    protected CommitmentType type;
+import java.util.Optional;
 
-    public CommitmentType(@Nullable CommitmentType type) {
-        this.type = type;
-    }
+public abstract class CommitmentType {
+    protected @Nullable CommitmentType type;
 
     protected CommitmentType() {
         this(null);
     }
 
-    protected CommitmentType type() {
-        return type;
+    public CommitmentType(@Nullable CommitmentType type) {
+        this.type = type;
+    }
+
+    protected Optional<CommitmentType> type() {
+        return Optional.ofNullable(type);
     }
 }

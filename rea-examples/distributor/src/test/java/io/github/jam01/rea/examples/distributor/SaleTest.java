@@ -52,20 +52,20 @@ public class SaleTest {
         var bnkAcct = new BankAccount(dollarMoney, "checking", "central bank", "93012309876", BigDecimal.valueOf(100));
 
         // product types
-        var bottledWater = new ProductType("bottled water", unit, Value.asDecimal(1, usd));
-        var soda = new ProductType("soda", unit, Value.asDecimal(2, usd));
-        var rice = new ProductType("rice", kilograms, Value.asDecimal(1, usd));
+        var bottledWater = new ProductType("bottled water", unit, Value.asDecimalOf(1, usd));
+        var soda = new ProductType("soda", unit, Value.asDecimalOf(2, usd));
+        var rice = new ProductType("rice", kilograms, Value.asDecimalOf(1, usd));
 
         // stock resources
         var waterInventory = new ProductStock<>(bottledWater, Value.of(100, unit));
         var sodaInventory = new ProductStock<>(soda, Value.of(100, unit));
-        var riceInventory = new ProductStock<>(rice, Value.asDecimal(50, kilograms));
+        var riceInventory = new ProductStock<>(rice, Value.asDecimalOf(50, kilograms));
 
         // commitments
         var salesOrder = new SalesOrder(customer,
-                List.of(new SalesLine(bottledWater, Value.of(20, unit), Value.asDecimal(2, usd)), // overriding price
+                List.of(new SalesLine(bottledWater, Value.of(20, unit), Value.asDecimalOf(2, usd)), // overriding price
                         new SalesLine(soda, Value.of(20, unit)), // using product price
-                        new SalesLine(rice, Value.asDecimal(20, kilograms)))); // unit of measure != unit
+                        new SalesLine(rice, Value.asDecimalOf(20, kilograms)))); // unit of measure != unit
         var payOrder = new PaymentOrder(customer, enterprise,
                 List.of(new Reservation.Specification(dollarMoney, salesOrder.total())));
         var vat = new SalesVAT(revenueService,
@@ -98,7 +98,7 @@ public class SaleTest {
         // check the inventory is decreased
         assertEquals(Value.of(80, unit), waterInventory.quantity());
         assertEquals(Value.of(80, unit), sodaInventory.quantity());
-        assertEquals(Value.asDecimal(30, kilograms), riceInventory.quantity());
+        assertEquals(Value.asDecimalOf(30, kilograms), riceInventory.quantity());
 
         // not complete as we haven't registered any events
         assertFalse(saleContract.isComplete());
@@ -118,15 +118,15 @@ public class SaleTest {
         assertEquals(Value.of(new BigDecimal("85"), usd), bnkAcct.quantity());
 
         // execute commitments by respective events
-        var execdSale = salesOrder.execute(List.of(sale));
-        var execPay = payOrder.execute(List.of(payment1, payment2));
-        var execdTaxPay = vat.execute(List.of(taxPayment));
+        var execdSale = salesOrder.execute(List.of(sale)).value();
+        var execPay = payOrder.execute(List.of(payment1, payment2)).value();
+        var execdTaxPay = vat.execute(List.of(taxPayment)).value();
 
         assertTrue(execdSale.isFulfilled());
         assertTrue(execPay.isFulfilled());
         assertTrue(execdTaxPay.isFulfilled());
 
-        var execdSaleContract = saleContract.updateCommitments(List.of(execdSale, execPay, execdTaxPay));
+        var execdSaleContract = saleContract.updateCommitments(List.of(execdSale, execPay, execdTaxPay)).value();
         assertTrue(execdSaleContract.isComplete());
     }
 }

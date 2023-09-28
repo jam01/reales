@@ -4,6 +4,7 @@ import io.github.jam01.rea.Agent;
 import io.github.jam01.rea.Commitment;
 import io.github.jam01.rea.Event;
 import io.github.jam01.rea.Reservation;
+import io.github.jam01.rea.Result;
 import io.github.jam01.rea.Stockflow;
 import io.github.jam01.rea.attributes.UnitOfMeasure;
 import io.github.jam01.rea.attributes.Value;
@@ -21,7 +22,7 @@ public class SalesVAT extends Commitment {
 
     protected SalesVAT(Agent receiver,
                        List<Reservation.Specification> reservations,
-                       List<Event> executedBy,
+                       List<? extends Event> executedBy,
                        boolean isFulfilled) {
         super(null, Enterprise.getInstance(), receiver, reservations, null, executedBy, isFulfilled);
         // possible improvements:
@@ -32,15 +33,15 @@ public class SalesVAT extends Commitment {
     }
 
     @Override
-    public SalesVAT execute(List<Event> events) {
+    public Result<SalesVAT> execute(List<? extends Event> events) {
         if (isFulfilled) throw new IllegalStateException("Cannot modify execute events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<Reservation.Specification>) reservations), events);
 
-        return new SalesVAT(receiver, (List<Reservation.Specification>) reservations, events, isNowFulfilled);
+        return new Result<>(new SalesVAT(receiver, (List<Reservation.Specification>) reservations, events, isNowFulfilled));
     }
 
     @Override
-    public SalesVAT fulfill(boolean isFulfilled) {
+    public Result<SalesVAT> fulfill(boolean isFulfilled) {
         throw new UnsupportedOperationException("SalesVAT can only be fulfilled by Payment Events matching its Commitments");
     }
 

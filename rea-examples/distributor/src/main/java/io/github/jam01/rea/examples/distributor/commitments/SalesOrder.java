@@ -5,6 +5,7 @@ import io.github.jam01.rea.Commitment;
 import io.github.jam01.rea.Event;
 import io.github.jam01.rea.Reservation;
 import io.github.jam01.rea.ResourceType;
+import io.github.jam01.rea.Result;
 import io.github.jam01.rea.Stockflow;
 import io.github.jam01.rea.attributes.Value;
 import io.github.jam01.rea.examples.distributor.agents.Enterprise;
@@ -29,7 +30,7 @@ public class SalesOrder extends Commitment {
 
     protected SalesOrder(Agent receiver,
                       List<SalesLine> reservations,
-                      List<Event> executedBy,
+                      List<? extends Event> executedBy,
                       boolean isFulfilled,
                       OffsetDateTime createdOn) {
         super(null, enterprise, receiver, reservations, null, executedBy, isFulfilled);
@@ -81,14 +82,14 @@ public class SalesOrder extends Commitment {
     }
 
     @Override
-    public SalesOrder execute(List<Event> events) {
+    public Result<SalesOrder> execute(List<? extends Event> events) {
         if (isFulfilled) throw new IllegalStateException("Cannot modify execute events after order is fulfilled");
         boolean isNowFulfilled = matchBySum(((List<SalesLine>) reservations), events);
 
-        return new SalesOrder(receiver, (List<SalesLine>) reservations, events, isNowFulfilled, this.createdOn);
+        return new Result<>(new SalesOrder(receiver, (List<SalesLine>) reservations, events, isNowFulfilled, this.createdOn));
     }
 
-    public static boolean matchBySum(List<? extends Reservation.Specification> reservations, List<Event> events) {
+    public static boolean matchBySum(List<? extends Reservation.Specification> reservations, List<? extends Event> events) {
         var isFulfilled = false;
         var typeSum = new HashMap<ResourceType, Double>(); // precision tradeoff
 
@@ -122,7 +123,7 @@ public class SalesOrder extends Commitment {
     }
 
     @Override
-    protected final SalesOrder fulfill(boolean isFulfilled) {
+    protected final Result<SalesOrder> fulfill(boolean isFulfilled) {
         throw new UnsupportedOperationException("SalesOrder can only be fulfilled by Sale Events matching its Commitments");
     }
 }

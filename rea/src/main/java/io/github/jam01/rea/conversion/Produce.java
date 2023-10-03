@@ -4,7 +4,7 @@ import io.github.jam01.rea.Resource;
 
 import java.util.List;
 
-public final class Produce extends Transformation {
+public class Produce extends Transformation {
 
     public Produce(Resource resource) {
         super(resource);

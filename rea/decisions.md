@@ -8,8 +8,10 @@ To accommodate transferring identifiable and non-identifiable resources with the
 
 The main solution is to always include ResourceType and introduce a quantity attribute in Resource subclasses. In this model we consider Resources to represent only the attributes that we care about in the context economic events.
 
-# Reified ResourceType instead of Resources as subclass
-Allows ResourceType and Resource hierarchies independently. Also, to allow assigning ResourceTypes to Resources at runtime.
+Seen another way, not all resources linked to economic events are continuants and the model ought to deal with that.
+
+# Reified *EntityType instead of as subclass
+Allows entities and their types to form hierarchies independently. Also, to allow assigning types at runtime.
 
 # Types references to Types
 Allows creating Types hierarchies at runtime.
@@ -20,5 +22,5 @@ Allows to exchange uniquely identifiable goods without unnecessary data.
 # Using Result<Entity>
 Allows us to synthetically mix procedure call and event connector, which gives us the ability to treat entities entirely as immutable. Also see Vernon's IDDD on Event Sourcing in Functional Languages.
 
-# Allow to stockflow on Event and commitments in Contract
+# Allow to modify stockflow in Events and commitments in Contract
 Probably shouldn't for events...

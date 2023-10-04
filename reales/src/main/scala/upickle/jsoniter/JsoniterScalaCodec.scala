@@ -1,8 +1,6 @@
 package upickle.jsoniter
 
 import com.github.plokhotnyuk.jsoniter_scala.core.{JsonReader, JsonValueCodec, JsonWriter}
-import io.github.jam01.rea.attributes.Value
-import io.github.jam01.reales.domain.CollectionResource
 import upickle.core.Visitor
 import upickle.jsoniter.JsoniterScalaCodec.NIDX
 
@@ -12,17 +10,19 @@ import java.nio.charset.StandardCharsets
 // https://github.com/plokhotnyuk/jsoniter-scala/blob/v2.23.5/jsoniter-scala-circe/shared/src/main/scala/io/circe/JsoniterScalaCodec.scala
 // https://github.com/evolution-gaming/play-json-tools/blob/v1.0.0/play-json-jsoniter/shared/src/main/scala/play/api/libs/json/JsonValueCodecJsValue.scala
 // https://github.com/com-lihaoyi/upickle/pull/467#issuecomment-1473358589
+// https://github.com/com-lihaoyi/upickle/blob/3.1.3/ujson/src/ujson/JsVisitor.scala
 object JsoniterScalaCodec {
   private val NIDX = -1
 
   def defaultNumberParser[J]: (JsonReader, Visitor[_, J]) => J = (in, v) => {
     in.setMark()
-    var digits, index = 0
+    var digits = 0
+    var isNeg = false
     var decIndex, expIndex = -1
     var b = in.nextByte()
     if (b == '-') {
       b = in.nextByte()
-      index += 1
+      isNeg = true
     }
     while ((b >= '0' && b <= '9') && in.hasRemaining()) {
       b = in.nextByte()
@@ -36,60 +36,34 @@ object JsoniterScalaCodec {
       } else {
         val x = in.readBigInt(null)
         if (x.isValidLong) v.visitInt64(x.longValue, NIDX)
-        else v.visitString(x.toString(), NIDX) // see: https://github.com/com-lihaoyi/upickle/blob/3.1.3/ujson/src/ujson/JsVisitor.scala#L33
+        else v.visitString(x.toString(), NIDX) // see: ujson/JsVisitor.scala#L33
         // alternative: v.visitFloat64StringParts(x.toString(), -1, -1, NIDX)
       }
     } else {
-      val x = in.readBigDecimal(null)
-      if (x.isValidD)
+      val y = in.readDouble() // readDouble() returns Double.Infinity if too large
+      if (!y.isPosInfinity && !y.isNegInfinity) v.visitFloat64(y, NIDX)
+      else {
+        in.rollbackToMark()
+        v.visitString(new String(in.readRawValAsBytes(), StandardCharsets.US_ASCII), NIDX) // see: ujson/JsVisitor.scala#L33
+        // alternative: v.visitFloat64StringParts(new String(in.readRaw...), -1, -1, NIDX)
+      }
     }
-//    } else {
-//      index += digits
-//      if (b == '.') {
-//        decIndex = index
-//        while ((b >= '0' && b <= '9') && in.hasRemaining()) {
-//          b = in.nextByte()
-//          index += 1
-//        }
-//      }
-//
-//      if ((b | 0x20) == 'e') {
-//        expIndex = index
-//        b = in.nextByte()
-//        index += 1
-//        if (b == '-' || b == '+') {
-//          b = in.nextByte()
-//          index += 1
-//        }
-//        while ((b >= '0' && b <= '9') && in.hasRemaining()) {
-//          b = in.nextByte()
-//          index += 1
-//        }
-//      }
-//
-//      val cs = new String(in.readRawValAsBytes(), StandardCharsets.US_ASCII)
-//      if (cs.length -1 != index) in.decodeError("invalid number")
-//      v.visitFloat64StringParts(cs, decIndex, expIndex, NIDX)
-//    }
   }
 }
 
 final class JsoniterScalaCodec[J](
-                                maxDepth: Int,
-                                numberParser: JsonReader => J,
-                                v: Visitor[_, J]) extends JsonValueCodec[J] {
+                                   maxDepth: Int,
+                                   numberParser: JsonReader => J,
+                                   v: Visitor[_, J]) extends JsonValueCodec[J] {
   override def nullValue: J = null.asInstanceOf[J]
-
-  override def decodeValue(in: JsonReader, default: J): J =
-    decode(in, maxDepth, v)
 
   override def encodeValue(x: J, out: JsonWriter): Unit =
     throw new UnsupportedOperationException("only supports decoding")
 
-  private[this] def decode(in: JsonReader, depth: Int, v: Visitor[_, J]): J = {
-    val x = new CollectionResource(null, null, null, Value.of(123, null),
-      null, null)
+  override def decodeValue(in: JsonReader, default: J): J =
+    decode(in, maxDepth, v)
 
+  private[this] def decode(in: JsonReader, depth: Int, v: Visitor[_, J]): J = {
     val b = in.nextToken()
     if (b == '"') {
       in.rollbackToken()
@@ -108,7 +82,7 @@ final class JsoniterScalaCodec[J](
       val arrV = v.visitArray(if (isEmpty) 0 else -1, NIDX).narrow
       if (!isEmpty) {
         in.rollbackToken()
-        while ({
+        while ( {
           arrV.visitValue(decode(in, depthM1, arrV.subVisitor.asInstanceOf), NIDX)
           in.isNextToken(',')
         }) ()
@@ -123,7 +97,7 @@ final class JsoniterScalaCodec[J](
       if (!isEmpty) {
         in.rollbackToken()
         var key = "?"
-        while ({
+        while ( {
           key = in.readKeyAsString()
           objV.visitKeyValue(objV.visitKey(NIDX).visitString(key, NIDX))
           objV.visitValue(decode(in, depthM1, objV.subVisitor.asInstanceOf), NIDX)

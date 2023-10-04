@@ -37,15 +37,16 @@ object JsoniterScalaCodec {
         val x = in.readBigInt(null)
         if (x.isValidLong) v.visitInt64(x.longValue, NIDX)
         else v.visitString(x.toString(), NIDX) // see: ujson/JsVisitor.scala#L33
-        // alternative: v.visitFloat64StringParts(x.toString(), -1, -1, NIDX)
+        // alt: v.visitFloat64StringParts(x.toString(), -1, -1, NIDX)
       }
     } else {
-      val y = in.readDouble() // readDouble() returns Double.Infinity if too large
-      if (!y.isPosInfinity && !y.isNegInfinity) v.visitFloat64(y, NIDX)
+      val y = in.readDouble()
+      if (!y.isInfinity) v.visitFloat64(y, NIDX) // readDouble() returns Double.Infinity if too large
+      // alt: readBigDecimal and check BigDecimal.isDecimalDouble
       else {
         in.rollbackToMark()
         v.visitString(new String(in.readRawValAsBytes(), StandardCharsets.US_ASCII), NIDX) // see: ujson/JsVisitor.scala#L33
-        // alternative: v.visitFloat64StringParts(new String(in.readRaw...), -1, -1, NIDX)
+        // alt: v.visitFloat64StringParts(new String(in.readRaw...), -1, -1, NIDX)
       }
     }
   }

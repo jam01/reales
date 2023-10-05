@@ -16,11 +16,11 @@ object JsoniterScalaCodec {
 
   def defaultNumberParser[J]: (JsonReader, Visitor[_, J]) => J = (in, v) => {
     in.setMark()
-    var digits = 0
     var isNeg = false
-    var decIndex, expIndex = -1
+    var digits = 0
     var b = in.nextByte()
-    if (b == '-') {
+    if (b >= '0' && b <= '9') digits += 1
+    else if (b == '-') {
       b = in.nextByte()
       isNeg = true
     }
@@ -40,8 +40,9 @@ object JsoniterScalaCodec {
         // alt: v.visitFloat64StringParts(x.toString(), -1, -1, NIDX)
       }
     } else {
-      val y = in.readDouble()
-      if (!y.isInfinity) v.visitFloat64(y, NIDX) // readDouble() returns Double.Infinity if too large
+      in.setMark()
+      val y = in.readDouble() // readDouble() returns Double.Infinity if too large
+      if (y.isFinite) v.visitFloat64(y, NIDX) // https://github.com/openjdk/jdk/pull/9238
       // alt: readBigDecimal and check BigDecimal.isDecimalDouble
       else {
         in.rollbackToMark()
@@ -54,7 +55,7 @@ object JsoniterScalaCodec {
 
 final class JsoniterScalaCodec[J](
                                    maxDepth: Int,
-                                   numberParser: JsonReader => J,
+                                   numberParser: (JsonReader, Visitor[_, J]) => J,
                                    v: Visitor[_, J]) extends JsonValueCodec[J] {
   override def nullValue: J = null.asInstanceOf[J]
 
@@ -75,7 +76,7 @@ final class JsoniterScalaCodec[J](
       else v.visitFalse(NIDX)
     } else if (b >= '0' && b <= '9' || b == '-') {
       in.rollbackToken()
-      numberParser(in)
+      numberParser(in, v)
     } else if (b == '[') {
       val depthM1 = depth - 1
       if (depthM1 < 0) in.decodeError("depth limit exceeded")

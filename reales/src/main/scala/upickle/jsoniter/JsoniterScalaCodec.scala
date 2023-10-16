@@ -43,7 +43,7 @@ object JsoniterScalaCodec {
       in.setMark()
       val y = in.readDouble() // readDouble() returns Double.Infinity if too large
       if (y.isFinite) { // https://github.com/openjdk/jdk/pull/9238
-        v.visitFloat64(y, NIDX) 
+        v.visitFloat64(y, NIDX)
         // in.setMark(); in.rollbackToMark() // clear mark needed ???
       }
       // alt: readBigDecimal and check BigDecimal.isDecimalDouble

@@ -25,7 +25,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rea</artifactId>
-            <version>${project.version}</version>
+            <version>${project.version}</version><!-- todo: project is not tied to rea project version -->
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

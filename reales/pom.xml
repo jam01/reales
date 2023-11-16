@@ -26,12 +26,7 @@
         <dependency>
             <groupId>io.github.jam01</groupId>
             <artifactId>rea</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jspecify</groupId>
-            <artifactId>jspecify</artifactId>
-            <version>0.3.0</version>
+            <version>${project.version}</version><!-- todo: project is not tied to rea project version -->
         </dependency>
         <dependency>
             <!-- https://github.com/davidB/scala-maven-plugin/blob/4.8.0/src/it/test_scala3/pom.xml -->

@@ -13,7 +13,6 @@
         <module>rea</module>
         <module>rea-examples</module>
         <module>reales</module>
-        <module>json-schema</module>
     </modules>
 
 </project>
